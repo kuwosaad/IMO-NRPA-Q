@@ -1,0 +1,448 @@
+[2025-08-12 15:39:10] [MAIN] Logging to file: /Users/mohammadsaad/Desktop/IMO Framework CEO Genius /logs/IMO14.log
+[2025-08-12 15:39:10] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 0 of 10 ...
+[2025-08-12 15:39:10] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:39:10] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:39:23] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:39:23] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993350-TgKkyfxQnm0BMY0eYHpf","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993350,"choices":[{"logp... [truncated]
+[2025-08-12 15:39:23] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:39:23] [NRPA] Initial strategies:
+[2025-08-12 15:39:23]  - Direct Approach: Solve the problem directly using standard techniques
+[2025-08-12 15:39:23]  - Case Analysis: Break the problem into manageable cases
+[2025-08-12 15:39:23]  - Proof by Contradiction: Assume the opposite and derive a contradiction
+[2025-08-12 15:39:23] [NRPA] Starting search: L=2, N=60, Alpha=1.0, MaxDepth=4, Temp=1.0
+[2025-08-12 15:39:23] [NRPA] Generating refinements for prefix: Case Analysis: Break the problem into manageable cases
+[2025-08-12 15:39:23] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:39:35] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:39:35] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993363-hjC288LKLmgRT37RrbG0","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993363,"choices":[{"logprobs":null,"finish_rea... [truncated]
+[2025-08-12 15:39:35] [DEBUG] Raw refinement response: '{"refinements": [\n  "Define mutually exclusive cases using quantifiable thresholds (e.g., variable bounds, parity, sign) to ensure exhaustive coverage.",\n  "Introduce subcases for critical values wher'
+[2025-08-12 15:39:35] [NRPA] Parsed refinements: 5 items, truncated=False, errors=[]
+[2025-08-12 15:39:35] [NRPA] Generated 5 valid refinements
+[2025-08-12 15:39:35] [NRPA] Generating refinements for prefix: Case Analysis: Break the problem into manageable cases -> Define mutually exclusive cases using quantifiable thresholds (e.g., variable bounds, parity, sign) to ensure exhaustive coverage.
+[2025-08-12 15:39:35] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:39:48] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:39:48] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993375-LKEtBaoDdi3cqR5YwTQR","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993376,"choices":[{"logprobs":null,... [truncated]
+[2025-08-12 15:39:48] [DEBUG] Raw refinement response: '{"refinements": [\n  "Introduce subcases via secondary thresholds (e.g., magnitude tiers: |x| < 1 vs |x| ≥ 1) to handle residual complexity within primary cases.",\n  "For each case, derive case-specifi'
+[2025-08-12 15:39:48] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:39:48] [NRPA] Refinement validation failed, re-asking (attempt 1/3)
+[2025-08-12 15:39:48] [NRPA] Re-asking for refinements (attempt 2/3) due to: ['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:39:48] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:40:12] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:40:12] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+    ... [truncated]
+[2025-08-12 15:40:12] [DEBUG] Raw refinement response: ''
+[2025-08-12 15:40:12] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:40:12] [NRPA] Refinement validation failed, re-asking (attempt 2/3)
+[2025-08-12 15:40:12] [NRPA] Re-asking for refinements (attempt 3/3) due to: ['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:40:12] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:40:25] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:40:25] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993412-xIMx8skV3cKzrO5WAML5","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993412,"choices":[{"logprobs":null,... [truncated]
+[2025-08-12 15:40:25] [DEBUG] Raw refinement response: '{"refin'
+[2025-08-12 15:40:25] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:40:25] [NRPA] Refinement validation failed, re-asking (attempt 3/3)
+[2025-08-12 15:40:25] [NRPA] Using default refinements after failed parsing
+[2025-08-12 15:40:25] [NRPA] Generated 1 default refinement
+[2025-08-12 15:40:25] [NRPA] Generating refinements for prefix: Case Analysis: Break the problem into manageable cases -> Define mutually exclusive cases using quantifiable thresholds (e.g., variable bounds, parity, sign) to ensure exhaustive coverage. -> Refinement of: Case Analysis: Break the problem into manageable c...
+[2025-08-12 15:40:25] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:40:41] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:40:41] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993425-YMSjJ4tf2EBHbaxfRe8H","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free"... [truncated]
+[2025-08-12 15:40:41] [DEBUG] Raw refinement response: ''
+[2025-08-12 15:40:41] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:40:41] [NRPA] Refinement validation failed, re-asking (attempt 1/3)
+[2025-08-12 15:40:41] [NRPA] Re-asking for refinements (attempt 2/3) due to: ['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:40:41] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)

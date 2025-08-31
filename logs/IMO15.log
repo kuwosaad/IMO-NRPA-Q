@@ -1,0 +1,1662 @@
+[2025-08-12 15:48:00] [MAIN] Logging to file: /Users/mohammadsaad/Desktop/IMO Framework CEO Genius /logs/IMO15.log
+[2025-08-12 15:48:00] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 0 of 10 ...
+[2025-08-12 15:48:00] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:48:00] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:48:13] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:48:13] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993880-A7XBrz1Rj20aTrfq35HC","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993880,"choices":[{"logp... [truncated]
+[2025-08-12 15:48:13] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:48:13] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:48:13] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:48:13] [NRPA] Invalid/empty strategist response, re-asking (attempt 1/3)
+[2025-08-12 15:48:13] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:48:26] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:48:26] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993893-rIQhfNS4MNobOadKljmx","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":175499... [truncated]
+[2025-08-12 15:48:26] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:48:26] [NRPA] Empty strategist response received (attempt 2/3)
+[2025-08-12 15:48:26] [ERROR] Exception in enumerate_initial_strategies (attempt 2): Empty response from strategist
+[2025-08-12 15:48:26] [NRPA] Invalid/empty strategist response, re-asking (attempt 2/3)
+[2025-08-12 15:48:26] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:48:41] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:48:41] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993907-aOOZ0nREXncQabviuZ8U","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.comple... [truncated]
+[2025-08-12 15:48:41] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:48:41] [NRPA] Empty strategist response received (attempt 3/3)
+[2025-08-12 15:48:41] [ERROR] Exception in enumerate_initial_strategies (attempt 3): Empty response from strategist
+[2025-08-12 15:48:41] [NRPA] All re-asking attempts failed, using default strategies
+[2025-08-12 15:48:41] [NRPA] No valid strategies parsed, using default strategies:
+[2025-08-12 15:48:41]  - Direct Approach: Solve the problem directly using standard techniques
+[2025-08-12 15:48:41]  - Case Analysis: Break the problem into manageable cases
+[2025-08-12 15:48:41]  - Proof by Contradiction: Assume the opposite and derive a contradiction
+[2025-08-12 15:48:41] [NRPA] Starting search: L=2, N=60, Alpha=1.0, MaxDepth=4, Temp=1.0
+[2025-08-12 15:48:41] [NRPA] Generating refinements for prefix: Case Analysis: Break the problem into manageable cases
+[2025-08-12 15:48:41] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:48:55] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:48:55] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993922-WQDekySFRvkCnXftdOT7","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993922,"choic... [truncated]
+[2025-08-12 15:48:55] [DEBUG] Raw refinement response: '{"refinements": [\n  "Define explicit partitioning criteria (e.g., parity, magnitude thresholds, geometric configurations) to ensure cases are mathematically distinct.",\n  "Verify mutual exclusivity an'
+[2025-08-12 15:48:55] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:48:55] [NRPA] Refinement validation failed, re-asking (attempt 1/3)
+[2025-08-12 15:48:55] [NRPA] Re-asking for refinements (attempt 2/3) due to: ['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:48:55] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:49:11] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:49:11] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993936-1hiHAmtzFIsIHeaNGWNx","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"... [truncated]
+[2025-08-12 15:49:11] [DEBUG] Raw refinement response: '{"refinements": [\n  "Define explicit'
+[2025-08-12 15:49:11] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:49:11] [NRPA] Refinement validation failed, re-asking (attempt 2/3)
+[2025-08-12 15:49:11] [NRPA] Re-asking for refinements (attempt 3/3) due to: ['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:49:11] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:49:24] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:49:24] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993951-ueCiiaMIgIRlk3Et5Mbv","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993951,"choices":[{"logp... [truncated]
+[2025-08-12 15:49:24] [DEBUG] Raw refinement response: '{"refinements": [\n  "Define mutually exclusive and collectively exhaustive cases using logical conditions (e.g., parameter inequalities, residue classes modulo n) to ensure full coverage.",\n  "Identif'
+[2025-08-12 15:49:24] [NRPA] Parsed refinements: 5 items, truncated=False, errors=[]
+[2025-08-12 15:49:24] [NRPA] Generated 5 valid refinements
+[2025-08-12 15:49:24] [NRPA] Generating refinements for prefix: Case Analysis: Break the problem into manageable cases -> Prioritize edge cases (e.g., equality conditions, degenerate configurations) to resolve boundary behaviors early.
+[2025-08-12 15:49:24] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:49:37] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:49:37] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993964-NRkAVESrCfIpaEujZuys","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754993964,"choic... [truncated]
+[2025-08-12 15:49:37] [DEBUG] Raw refinement response: ''
+[2025-08-12 15:49:37] [NRPA] Empty refinement response received (attempt 1/3)
+[2025-08-12 15:49:37] [NRPA] Refinement validation failed, re-asking (attempt 1/3)
+[2025-08-12 15:49:37] [NRPA] Re-asking for refinements (attempt 2/3) due to: ['empty_response']
+[2025-08-12 15:49:37] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:49:53] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:49:53] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993977-i4SyJESi3lz7zgICv8xq","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free"... [truncated]
+[2025-08-12 15:49:53] [DEBUG] Raw refinement response: '{"refinements": [\n  "Introduce symmetry reductions: Assume WLOG specific configurations using rotational/reflectional symmetry to minimize redundant cases. Grounded in group theory invariants.",\n  "No'
+[2025-08-12 15:49:53] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:49:53] [NRPA] Refinement validation failed, re-asking (attempt 2/3)
+[2025-08-12 15:49:53] [NRPA] Re-asking for refinements (attempt 3/3) due to: ['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:49:53] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:50:09] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:50:09] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754993993-kchbFPyxMljm9gevgn5g","provider":"Chutes","model":"deepseek/deepseek-r1... [truncated]
+[2025-08-12 15:50:09] [DEBUG] Raw refinement response: '{"refinements": [\n  "Formally define case boundaries using mathematical conditions (e.g., strict inequalities for interiors, equalities for boundaries) to ensure mutual exclusivity.",\n  "For degenerat'
+[2025-08-12 15:50:09] [NRPA] Parsed refinements: 0 items, truncated=False, errors=['Unsupported strategist payload type', 'missing refinements', 'too_few_refinements']
+[2025-08-12 15:50:09] [NRPA] Refinement validation failed, re-asking (attempt 3/3)
+[2025-08-12 15:50:09] [NRPA] Using default refinements after failed parsing
+[2025-08-12 15:50:09] [NRPA] Generated 1 default refinement
+[2025-08-12 15:50:09] [NRPA] Generating refinements for prefix: Case Analysis: Break the problem into manageable cases -> Prioritize edge cases (e.g., equality conditions, degenerate configurations) to resolve boundary behaviors early. -> Refinement of: Case Analysis: Break the problem into manageable c...
+[2025-08-12 15:50:09] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:50:28] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:50:28] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-17549... [truncated]
+[2025-08-12 15:50:28] [DEBUG] Raw refinement response: ''
+[2025-08-12 15:50:28] [NRPA] Empty refinement response received (attempt 1/3)
+[2025-08-12 15:50:28] [NRPA] Refinement validation failed, re-asking (attempt 1/3)
+[2025-08-12 15:50:28] [NRPA] Re-asking for refinements (attempt 2/3) due to: ['empty_response']
+[2025-08-12 15:50:28] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:50:42] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:50:42] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994028-JdgxbGAlthfc5Ec112pe","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","crea... [truncated]
+[2025-08-12 15:50:42] [DEBUG] Raw refinement response: ''
+[2025-08-12 15:50:42] [NRPA] Empty refinement response received (attempt 2/3)
+[2025-08-12 15:50:42] [NRPA] Refinement validation failed, re-asking (attempt 2/3)
+[2025-08-12 15:50:42] [NRPA] Re-asking for refinements (attempt 3/3) due to: ['empty_response']
+[2025-08-12 15:50:42] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:50:57] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:50:57] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994042-K79EVCjpqYTlPRDT3wow","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"... [truncated]
+[2025-08-12 15:50:57] [DEBUG] Raw refinement response: ''
+[2025-08-12 15:50:57] [NRPA] Empty refinement response received (attempt 3/3)
+[2025-08-12 15:50:57] [NRPA] Refinement validation failed, re-asking (attempt 3/3)
+[2025-08-12 15:50:57] [NRPA] Using default refinements after failed parsing
+[2025-08-12 15:50:57] [NRPA] Generated 1 default refinement
+[2025-08-12 15:50:57] [MAIN] >>>>>>> Error in run 0: attempted relative import with no known parent package
+[2025-08-12 15:50:57] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 1 of 10 ...
+[2025-08-12 15:50:57] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:50:57] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:51:11] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:51:11] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994058-Uvw3Zm7ldQSQxGq1ICZE","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754994058,"choic... [truncated]
+[2025-08-12 15:51:11] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:51:11] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:51:11] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:51:11] [MAIN] >>>>>>> Error in run 1: [Errno 32] Broken pipe
+[2025-08-12 15:51:11] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 2 of 10 ...
+[2025-08-12 15:51:11] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:51:11] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:51:26] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:51:26] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994071-qRhF1jFFTIvlWPz1aomx","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.comple... [truncated]
+[2025-08-12 15:51:26] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:51:26] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:51:26] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:51:26] [MAIN] >>>>>>> Error in run 2: [Errno 32] Broken pipe
+[2025-08-12 15:51:26] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 3 of 10 ...
+[2025-08-12 15:51:26] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:51:26] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:51:39] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:51:39] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994086-4Rdlu8XfRCsXKGxFoWFd","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754994086,"choices":[{"logprobs":null,... [truncated]
+[2025-08-12 15:51:39] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:51:39] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:51:39] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:51:39] [MAIN] >>>>>>> Error in run 3: [Errno 32] Broken pipe
+[2025-08-12 15:51:39] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 4 of 10 ...
+[2025-08-12 15:51:39] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:51:39] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:51:51] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:51:51] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994099-pQWp5X1pf6C0Ybb4xVBZ","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":1754994099,"choices":[{"logprobs":null,"finish_rea... [truncated]
+[2025-08-12 15:51:51] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:51:51] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:51:51] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:51:51] [MAIN] >>>>>>> Error in run 4: [Errno 32] Broken pipe
+[2025-08-12 15:51:51] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 5 of 10 ...
+[2025-08-12 15:51:51] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:51:51] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:52:05] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:52:05] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994111-QymaUySBCtZWNWU0IGm8","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free","object":"chat.completion","created":175499... [truncated]
+[2025-08-12 15:52:05] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:52:05] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:52:05] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:52:05] [MAIN] >>>>>>> Error in run 5: [Errno 32] Broken pipe
+[2025-08-12 15:52:05] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 6 of 10 ...
+[2025-08-12 15:52:05] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:52:05] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:52:26] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:52:26] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+    ... [truncated]
+[2025-08-12 15:52:26] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:52:26] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:52:26] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:52:26] [MAIN] >>>>>>> Error in run 6: [Errno 32] Broken pipe
+[2025-08-12 15:52:26] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 7 of 10 ...
+[2025-08-12 15:52:26] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:52:26] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:52:55] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:52:55] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+    ... [truncated]
+[2025-08-12 15:52:55] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:52:55] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:52:55] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:52:55] [MAIN] >>>>>>> Error in run 7: [Errno 32] Broken pipe
+[2025-08-12 15:52:55] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 8 of 10 ...
+[2025-08-12 15:52:55] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:52:55] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:53:14] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:53:14] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994176-spvaK... [truncated]
+[2025-08-12 15:53:14] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:53:14] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:53:14] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:53:14] [MAIN] >>>>>>> Error in run 8: [Errno 32] Broken pipe
+[2025-08-12 15:53:14] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 9 of 10 ...
+[2025-08-12 15:53:14] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-12 15:53:14] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-12 15:53:29] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-12 15:53:29] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754994194-6ZdvepgONH6PUvbczSw4","provider":"Chutes","model":"deepseek/deepseek-r1-0528:free"... [truncated]
+[2025-08-12 15:53:29] [DEBUG] Raw strategist response: ''
+[2025-08-12 15:53:29] [NRPA] Empty strategist response received (attempt 1/3)
+[2025-08-12 15:53:29] [ERROR] Exception in enumerate_initial_strategies (attempt 1): Empty response from strategist
+[2025-08-12 15:53:29] [MAIN] >>>>>>> Error in run 9: [Errno 32] Broken pipe

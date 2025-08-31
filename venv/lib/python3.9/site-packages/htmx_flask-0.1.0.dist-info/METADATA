@@ -1,0 +1,198 @@
+Metadata-Version: 2.1
+Name: htmx-flask
+Version: 0.1.0
+Summary: htmx support for Flask
+Project-URL: Source Code, https://github.com/sponsfreixes/htmx-flask
+Project-URL: Issue Tracker, https://github.com/sponsfreixes/htmx-flask/issues
+Project-URL: Changes, https://github.com/sponsfreixes/htmx-flask/blob/main/CHANGELOG.md
+Author-email: Sergi Pons Freixes <sergi@cub3.net>
+License: The MIT License (MIT)
+        
+        Copyright © 2022 Sergi Pons Freixes and the htmx-flask contributors
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this
+        software and associated documentation files (the “Software”), to deal in the Software
+        without restriction, including without limitation the rights to use, copy, modify,
+        merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+        permit persons to whom the Software is furnished to do so, subject to the following
+        conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or
+        substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+        INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+        PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+        LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+        OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+        OTHER DEALINGS IN THE SOFTWARE.
+License-File: LICENSE
+Keywords: flask,html,htmx
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Flask
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Markup :: HTML
+Requires-Python: >=3.7
+Requires-Dist: flask>=2.1.0
+Provides-Extra: dev
+Requires-Dist: pre-commit; extra == 'dev'
+Provides-Extra: tests
+Requires-Dist: pytest; extra == 'tests'
+Description-Content-Type: text/markdown
+
+# htmx-Flask
+
+htmx-Flask is an extension for Flask that adds support for [htmx](https://htmx.org) to 
+your application.  It simplifies using htmx with Flask by enhancing the global `request` 
+object and providing a new `make_response` function.
+
+## Install
+
+It's just `pip install htmx-flask` and you're all set. It's a pure Python package that
+only needs [`flask`](https://flask.palletsprojects.com) (for obvious reasons!).
+
+## Usage
+
+### Htmx Request
+
+Before using the enhanced `request`, you need to initialize the extension with:
+
+```python
+from flask import Flask
+from htmx_flask import Htmx
+
+htmx = Htmx()
+
+app = Flask(__name__)
+htmx.init_app(app)
+```
+
+After that, you can use `htmx_flask.request.htmx` to easily access
+[htmx request headers](https://htmx.org/reference/#request_headers). For example,
+instead of:
+
+```python
+from flask import request
+from my_app import app
+
+@app.route("/")
+def hello_workd():
+    if request.headers.get("HX-Request") == "true":
+        is_boosted = "Yes!" if request.headers.get("HX-Boosted") == "true" else "No!"
+        current_url = request.headers.get("HX-Current-URL")
+        return (
+            "<p>Hello World triggered from a htmx request.</p>"
+            f"<p>Boosted: {is_boosted}</p>"
+            f"<p>The current url is {current_url}."
+        )
+    else:
+        return "<p>Hello World triggered from a regular request.</p>"
+```
+
+You can do:
+
+```python
+from htmx_flask import request
+from my_app import app
+
+@app.route("/")
+def hello_workd():
+    if request.htmx:
+        is_boosted = "Yes!" if request.htmx.boosted else "No!"
+        current_url = request.htmx.current_url
+        return (
+            "<p>Hello World triggered from a htmx request.</p>"
+            f"<p>Boosted: {is_boosted}</p>"
+            f"<p>The current url is {current_url}."
+        )
+    else:
+        return "<p>Hello World triggered from a regular request.</p>"
+```
+
+### Htmx response
+
+You might be interested on adding
+[htmx response headers](https://htmx.org/reference/#response_headers) to your response.
+Use `htmx_flask.make_response` for that. For example, instead of:
+
+```python
+import json
+from flask import make_response
+from my_app import app
+
+@app.route("/hola-mundo")
+def hola_mundo():
+    body = "Hola Mundo!"
+    response = make_response(body)
+    response.headers["HX-Push-URL"] = "false"
+    trigger_string = json.dumps({"event1":"A message", "event2":"Another message"})
+    response.headers["HX-Trigger"] = trigger_string
+    return response
+```
+
+You can do:
+
+```python
+from htmx_flask import make_response
+from my_app import app
+
+@app.route("/hola-mundo")
+def hola_mundo():
+    body = "Hola Mundo!"
+    return make_response(
+        body,
+        push_url=False,
+        trigger={"event1": "A message", "event2": "Another message"},
+    )
+```
+
+# IntelliSense
+
+By using htmx-Flask you will also get the benefits of code completion, parameter info
+and quick info on your IDE. Check out these screenshots from PyCharm:
+
+![request.htmx autocomplete](https://raw.githubusercontent.com/sponsfreixes/htmx-flask/main/docs/images/request_htmx_code_completion.png)
+
+![make_response quick info](https://raw.githubusercontent.com/sponsfreixes/htmx-flask/main/docs/images/make_response_quick_info.png)
+
+![make_response parameter info](https://raw.githubusercontent.com/sponsfreixes/htmx-flask/main/docs/images/make_response_parameter_info.png)
+
+## How to contribute
+
+This project uses pre-commit hooks to run black, isort, pyupgrade and flake8 on each commit. To have that running
+automatically on your environment, install the project with:
+
+```shell
+pip install -e .[dev]
+```
+
+And then run once:
+
+```shell
+pre-commit install
+```
+
+From now one, every time you commit your files on this project, they will be automatically processed by the tools listed
+above.
+
+## How to run tests
+
+You can install pytest and other required dependencies with:
+
+```shell
+pip install -e .[tests]
+```
+
+And then run the test suite with:
+
+```shell
+pytest
+```
+

@@ -1,0 +1,94 @@
+[2025-08-11 22:27:57] [MAIN] Logging to file: /Users/mohammadsaad/Desktop/IMO Framework CEO Genius /logs/IMO2.log
+[2025-08-11 22:27:57] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 0 of 10 ...
+[2025-08-11 22:27:57] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-11 22:27:57] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)
+[2025-08-11 22:28:15] [STRATEGIST] API request succeeded. Status: 200
+[2025-08-11 22:28:15] [STRATEGIST] Response preview: 
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+
+         
+{"id":"gen-1754931478-bqSbt2J8LbdYlPARrFLG","prov... [truncated]
+[2025-08-11 22:28:15] [NRPA] Initial strategies:
+[2025-08-11 22:28:15] [NRPA] No strategies returned; falling back to original strategist flow.
+[2025-08-11 22:28:15] [STRATEGY] Using single strategy selection.
+[2025-08-11 22:28:15] [STRATEGIST] Sending request to OpenRouter API (deepseek/deepseek-r1-0528:free)... (Attempt 1/3)

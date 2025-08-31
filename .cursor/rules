@@ -1,0 +1,12 @@
+- Follow `AGENTS.md` as the source of truth for build, test, lint, typing, naming, imports, logging, config, and git conventions.
+- Prefer parallel, read-only discovery before edits: use ripgrep-style searches and batch file reads.
+- Keep operations bounded; do not run long-lived processes. Prefer single-shot commands with timeouts.
+- Make minimal, atomic edits; keep code highly readable with descriptive names and explicit types where applicable.
+- After edits: install deps if needed, run tests (`cd IMO25 && pytest -q`), and fix failures before concluding.
+- Commit policy: summarize the "why" in 1–2 sentences; include tests when changing behavior; never commit secrets. Use HEREDOC for messages.
+- Python style: PEP8, `black` (line length 100), imports grouped stdlib/third-party/local and sorted. Use `from __future__ import annotations` and dataclasses for simple data.
+- Error handling: never crash on provider issues; use structured errors or `ValueError` with clear messages; backoff on HTTP 429.
+- Logging: concise, structured, timestamped logs under `logs/` and `code/logs/` as applicable; emit MCTS_* telemetry markers when running MCTS flows.
+- Config: read from `.env` via `python-dotenv`; safe defaults; feature flags via env (e.g., `MCTS_GENIUS=1`).
+- Tooling constraints: avoid `find`/`grep` shell; use ripgrep-based search tool; avoid `cat`/`head`/`tail` via shell in favor of file read APIs.
+- GitHub ops: use `gh` for PRs; do not change git config; do not push unless explicitly requested.

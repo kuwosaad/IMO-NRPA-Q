@@ -1,0 +1,1974 @@
+Gemini 2.5 Pro Capable of Winning Gold at IMO 2025∗
+Yichen Huang (黄溢辰)†
+
+Lin F. Yang (杨林)‡
+
+arXiv:2507.15855v2 [cs.AI] 22 Jul 2025
+
+July 23, 2025
+
+Abstract
+The International Mathematical Olympiad (IMO) poses uniquely challenging problems requiring deep insight, creativity, and formal reasoning. While Large Language
+Models (LLMs) perform well on mathematical benchmarks like AIME, they struggle
+with Olympiad-level tasks. We use Google’s Gemini 2.5 Pro on the newly released
+IMO 2025 problems, avoiding data contamination. Using a self-verification pipeline
+with careful prompt design, 5 (out of 6) problems are solved correctly (up to a caveat
+discussed below). This result underscores the importance of developing optimal strategies to harness the full potential of powerful LLMs for complex reasoning tasks.
+
+1
+
+Introduction
+
+The International Mathematical Olympiad (IMO) is an esteemed annual competition that
+convenes the world’s most talented pre-university mathematicians. Established in Romania
+in 1959 with just seven participating countries, it has since expanded to include over 100
+nations, each represented by a team of up to six contestants [2]. Held annually, with the sole
+exception of 1980, the IMO challenges participants with exceptionally difficult problems in
+fields like algebra, geometry, number theory, and combinatorics. Contestants are given two
+4.5-hour sessions over two days to solve three problems per session, each graded out of seven
+points [5]. Unlike typical mathematical exercises, IMO problems demand profound insight,
+originality, and the ability to synthesize diverse mathematical concepts. This emphasis on
+creative, proof-based reasoning makes the IMO a hallmark of mathematical excellence and
+a vital platform for identifying future leaders in the field.
+Consequently, the IMO has also become a grand challenge and a formidable benchmark
+for evaluating the advanced reasoning capabilities of Artificial Intelligence, particularly Large
+Language Models (LLMs), providing a rigorous test of their ability to perform complex,
+multi-step logical deduction rather than rote calculation [8, 16, 13]. Traditional benchmarks
+∗
+
+Project webpage: https://github.com/lyang36/IMO25
+huangtbcmh@gmail.com
+‡
+linyang@ee.ucla.edu, Department of Electrical and Computer Engineering, and Department of Computer Science, UCLA
+†
+
+1
+
+like GSM8K and MATH focus on grade-school and high-school level problems, respectively,
+where LLMs have achieved high performance through pattern recognition and retrieval from
+training data [4, 9]. However, IMO problems surpass these in complexity, requiring multistep reasoning, abstraction, and innovation akin to human expert-level cognition, thereby
+exposing limitations in LLMs’ generalization and vulnerability to hallucinations or superficial
+heuristics [17]. This positions the IMO as an ideal probe for assessing whether LLMs can
+truly “reason” rather than merely replicate memorized solutions, addressing concerns about
+their reliability in high-stakes domains like scientific discovery and formal verification [10].
+The pursuit of automated mathematical reasoning has seen remarkable progress with the
+advent of LLMs [3, 18]. Early successes on foundational benchmarks have rapidly escalated
+to tackling complex, competition-level mathematics [11]. This progress has been significantly
+propelled by innovations such as Chain-of-Thought (CoT) prompting, which enables models
+to generate intermediate reasoning steps, thereby improving performance on tasks requiring
+complex logic and calculation [20]. Nevertheless, even state-of-the-art models have demonstrated significant limitations when confronted with Olympiad-level problems. For example,
+recent evaluations on problems from the USA Mathematical Olympiad (USAMO) 2025 and
+IMO 2025 showed that top-tier public models still struggle to produce sound, rigorous proofs
+and fail to achieve scores comparable to human medalists, often succumbing to logical fallacies and a lack of creative insight [14, 13]. This highlights a critical gap between generating
+numerically correct answers and constructing logically sound arguments [12].
+In this paper, we construct a self-verification pipeline with careful prompt design and
+implemented using the Gemini 2.5 Pro model, a strong base model released by Google [7].
+We solved 51 out of the 6 problems of IMO 2025. A persistent and critical challenge in
+the evaluation of LLMs is the issue of data contamination, where test data from public
+benchmarks is inadvertently included in the vast pre-training corpora, leading to inflated
+and unreliable performance metrics [6, 21]. To ensure a rigorous and uncontaminated assessment of the model’s genuine problem-solving capabilities, this work exclusively utilizes
+the problems from the most recent IMO 2025 competition. As these problems were released
+only days before our evaluation, they serve as a pristine testbed, mitigating the risk of data
+leakage and providing a robust measure of the model’s ability to generalize and reason on
+genuinely unseen challenges. Our approach shows that strong existing models are already
+capable of solving difficult math reasoning problems, but directly using them can result in
+poor results as shown in [13]. Our results demonstrate a significant advance in automated
+mathematical reasoning.
+Recently we became aware of an announcement by OpenAI on achieving Gold Medal
+on IMO 2025 [19]. After we submitted this paper to arXiv, we became aware of a similar
+announcement by Google DeepMind [1].
+1
+
+Noted that for Problems 1 and 2 we explicitly prompted the model to use induction and analytic
+geometry. However, these are very general methods. If we had a multi-agent system, we would definitely
+assign an agent to explore these methods. Thus, it should be clear that Gemini 2.5 Pro has the reasoning
+capability to win the Gold Medal—hence the title of this paper.
+
+2
+
+2
+
+Methods
+
+2.1
+
+Pipeline
+
+At a high level, our pipeline proceeds as follows (illustrated in 1):
+• Step 1: Initial solution generation with the prompt in Section 3.1;
+• Step 2: Self-improvement;
+• Step 3: Verifying the solution with the prompt in Section 3.2 and generating a bug
+report; go to Step 4 or Step 6 (see below for explanations);
+• Step 4: Review of the bug report;
+• Step 5: Correcting or improving the solution based on the bug report; go to Step 3;
+• Step 6: Accept or Reject.
+
+Step 1:
+Initial solution
+generation
+
+Step 3:
+Verification
+(Go to Step 4 or 6)
+
+Step 2:
+Self-improvement
+failed
+
+Step 4:
+Bug report review
+
+w/ major issue for 10 steps
+
+Step 6′ :
+Reject
+
+Step 5:
+Correction
+
+consecutively passes 5 times
+Step 6:
+Accept
+
+Figure 1: Flow diagram of our pipeline. See the main text for detailed explanations of each
+step.
+Initially, we run the model (Gemini 2.5 Pro) some number of times and obtain some
+initial solution samples to the problem. The sampling step is analogous to exploration. We
+hope that at least one or more samples have some overlap with the correct approach. Then,
+we try to iteratively improve the solutions and eventually accept high-quality ones.
+More specifically, we first have the model attempt to solve the problem with the prompt
+in Section 3.1. This prompt is designed to emphasize rigor rather than focus on finding the
+final answer and thus matches the theme of IMO. We have randomly selected some outputs
+and found that the overall quality of the solutions are pretty low. This is consistent with
+very recent findings of Ref. [13].
+In Step 2, the model is prompted to review and try to improve its work. While Gemini 2.5
+Pro is good at mathematics, as a general-purpose LLM, it is not tailored to solving especially
+3
+
+challenging mathematical problems. One significant constraint is the thinking budget. Note
+that thinking is quite token consuming: Even a trivial fact might take a few thousand tokens
+for the model to prove. The maximum number of thinking tokens of Gemini 2.5 Pro is 32768,
+which is not enough for solving a typical IMO problem. We observe that in Step 1, the model
+almost always uses up its thinking budget. Thus, the model does not even have the capacity
+to fully solve the problem. This is why we choose to break down the problem solving process
+into steps. Step 2 effectively injects another budget of 32768 thinking tokens to allow the
+model review and continue its work. We keep monitoring the entire process and do observe
+that the outputs have been noticeably improved during Step 2.
+Next we will use the verifier to make iterative improvement and decide whether to accept
+an improved solution.
+
+2.2
+
+Verifier
+
+The verifier plays an important role in our pipeline. Its functionality is to carefully review
+a solution step by step and find out issues (if any). We emphasize mathematical rigor and
+classify issues into critical errors and justification gaps. Critical errors are something that
+is demonstratively false or with clear logical fallacies, while justification gaps can be major
+or minor. A major justification gap that cannot be repaired would crash an entire proof,
+while minor justification gaps may not even be well defined: A minor gap could sometimes
+be viewed as concise argument.
+In Step 3, we use the verifier to generate a bug report for each solution outputted in Step
+2. The bug report contains a list of issues classified as critical errors or justification gaps.
+For each issue, an explanation is required. The bug report will serve as useful information for
+the model to improve the solution, either fixing errors or filling gaps. Step 4 is to carefully
+review each issue in the bug report. If the verifier makes a mistake and reports an issue
+which is not really an issue, the issue would be deleted from the bug report. Thus, Step 4
+increases the reliability of the bug report. In Step 5, the model tries to improve the solution
+based on the bug report. We iterate Steps 3-5 a sufficient number of times until we decide
+to accept or decline a solution. We accept a solution if it robustly passes the verification
+process and decline a solution if there are always critical errors or major justification gaps
+during the iterations.
+We observe that the verifier is quite reliable but can make mistakes. Since our major
+goal is not to benchmark the verifier, we do not have quantitative results on its effectiveness.
+However, we have used this verifier for quite a while (starting from well before IMO 2025).
+We have been keeping an eye on its performance and below is our qualitative observation:
+• Critical errors are seldom missed by the verifier. This is consistent with the observations
+in Ref. [15]. In the unlikely event such errors are not caught, simply running the verifier
+a few more times would very likely catch it. This is good because we do not wish to
+miss critical errors.
+• If the verifier reports a critical error, it may not always be critical, but it almost always
+needs some revision.
+4
+
+• The verifier may report some justification gaps which are only slightly beyond trivial
+statements and thus are not really gaps for mathematicians.
+Indeed, our system is quite robust to errors made by the verifier. We iteratively use the
+verifier a sufficiently number of times. If it misses an error in one iteration, it still has some
+probability to catch it in the next iteration. Also, if it claims an error which is actually
+not an error, such a false negative may not go through the bug report review step (Step 4).
+Furthermore, we instruct the model (who generates the solution) to review each item in the
+bug report. If the model does not agree with a particular item, it is encouraged to revise its
+solution to minimize misunderstanding. This is analogues to the peer review process. If a
+referee makes a wrong judgment, the authors are encouraged to revise the paper. Ultimately,
+the presentation is improved.
+At the time we plan to accept a solution, we do not wish the verifier misses any issue;
+we run the verifier five times and accept a solution only if it passes every time.
+
+3
+
+Experiment Setup
+
+We choose low temperature: 0.1. High temperature may lead to more random errors, which
+may be harmful. We use the maximum thinking budget (32768 reasoning tokens) of Gemini
+2.5 Pro. We do not use web search (of course), code, or any other tools. We share the most
+important prompts below.
+
+3.1
+
+Step 1 Prompt
+### Core Instructions ###
+
+*
+
+*
+
+** Rigor is Paramount :** Your primary goal is to produce a
+complete and rigorously justified solution . Every step in
+your solution must be logically sound and clearly
+explained . A correct final answer derived from flawed or
+incomplete reasoning is considered a failure .
+** Honesty About Completeness :** If you cannot find a
+complete solution , you must ** not ** guess or create a
+solution that appears correct but contains hidden flaws or
+justification gaps . Instead , you should present only
+significant partial results that you can rigorously prove .
+A partial result is considered significant if it represents
+a substantial advancement toward a full solution . Examples
+include :
+*
+Proving a key lemma .
+*
+Fully resolving one or more cases within a logically
+sound case - based proof .
+5
+
+*
+
+*
+
+Establishing a critical property of the mathematical
+objects in the problem .
+*
+For an optimization problem , proving an upper or lower
+bound without proving that this bound is achievable .
+** Use TeX for All Mathematics :** All mathematical
+variables , expressions , and relations must be enclosed in
+TeX delimiters ( e . g . , ‘ Let $n$ be an integer . ‘) .
+
+### Output Format ###
+Your response MUST be structured into the following sections ,
+in this exact order .
+**1. Summary **
+Provide a concise overview of your findings . This section must
+contain two parts :
+*
+
+*
+
+** a . Verdict :** State clearly whether you have found a
+complete solution or a partial solution .
+*
+** For a complete solution :** State the final answer ,
+e . g . , " I have successfully solved the problem . The
+final answer is ..."
+*
+** For a partial solution :** State the main rigorous
+conclusion ( s ) you were able to prove , e . g . , " I have not
+found a complete solution , but I have rigorously proven
+that ..."
+** b . Method Sketch :** Present a high - level , conceptual
+outline of your solution . This sketch should allow an
+expert to understand the logical flow of your argument
+without reading the full detail . It should include :
+*
+A narrative of your overall strategy .
+*
+The full and precise mathematical statements of any
+key lemmas or major intermediate results .
+*
+If applicable , describe any key constructions or case
+splits that form the backbone of your argument .
+
+**2. Detailed Solution **
+Present the full , step - by - step mathematical proof . Each step
+must be logically justified and clearly explained . The
+level of detail should be sufficient for an expert to
+
+6
+
+verify the correctness of your reasoning without needing to
+fill in any gaps . This section must contain ONLY the
+complete , rigorous proof , free of any internal commentary ,
+alternative approaches , or failed attempts .
+### Self - Correction Instruction ###
+Before finalizing your output , carefully review your " Method
+Sketch " and " Detailed Solution " to ensure they are clean ,
+rigorous , and strictly adhere to all instructions provided
+above . Verify that every statement contributes directly to
+the final , coherent mathematical argument .
+
+3.2
+
+Verification Prompt
+You are an expert mathematician and a meticulous grader
+for an International Mathematical Olympiad ( IMO ) level
+exam . Your primary task is to rigorously verify the
+provided mathematical solution . A solution is to be
+judged correct ** only if every step is rigorously
+justified .** A solution that arrives at a correct final
+answer through flawed reasoning , educated guesses , or
+with gaps in its arguments must be flagged as incorrect
+or incomplete .
+
+### Instructions ###
+**1. Core Instructions **
+*
+Your sole task is to find and report all issues in the
+provided solution . You must act as a ** verifier ** , NOT a
+solver . ** Do NOT attempt to correct the errors or fill the
+gaps you find .**
+*
+You must perform a ** step - by - step ** check of the entire
+solution . This analysis will be presented in a ** Detailed
+Verification Log ** , where you justify your assessment of
+each step : for correct steps , a brief justification
+suffices ; for steps with errors or gaps , you must provide a
+detailed explanation .
+**2. How to Handle Issues in the Solution **
+When you identify an issue in a step , you MUST first classify
+it into one of the following two categories and then follow
+7
+
+the specified procedure .
+*
+
+** a . Critical Error :**
+This is any error that breaks the logical chain of the
+proof . This includes both ** logical fallacies ** ( e . g . ,
+claiming that ‘A >B , C >D ‘ implies ‘A -C >B -D ‘) and
+** factual errors ** ( e . g . , a calculation error like
+‘2+3=6 ‘) .
+*
+** Procedure :**
+*
+Explain the specific error and state that it
+** invalidates the current line of reasoning **.
+*
+Do NOT check any further steps that rely on this
+error .
+*
+You MUST , however , scan the rest of the solution
+to identify and verify any fully independent parts .
+For example , if a proof is split into multiple
+cases , an error in one case does not prevent you
+from checking the other cases .
+
+*
+
+** b . Justification Gap :**
+This is for steps where the conclusion may be correct , but
+the provided argument is incomplete , hand - wavy , or
+lacks sufficient rigor .
+*
+** Procedure :**
+*
+Explain the gap in the justification .
+*
+State that you will ** assume the step ’ s conclusion
+is true ** for the sake of argument .
+*
+Then , proceed to verify all subsequent steps to
+check if the remainder of the argument is sound .
+
+**3. Output Format **
+Your response MUST be structured into two main sections : a
+** Summary ** followed by the ** Detailed Verification Log **.
+*
+
+** a . Summary **
+This section MUST be at the very beginning of your
+response . It must contain two components :
+*
+** Final Verdict **: A single , clear sentence declaring
+the overall validity of the solution . For example : " The
+solution is correct ," " The solution contains a Critical
+Error and is therefore invalid ," or " The solution ’ s
+approach is viable but contains several Justification
+
+8
+
+*
+
+*
+
+Gaps ."
+** List of Findings **: A bulleted list that summarizes
+** every ** issue you discovered . For each finding , you
+must provide :
+*
+** Location :** A direct quote of the key phrase or
+equation where the issue occurs .
+*
+** Issue :** A brief description of the problem and
+its classification (** Critical Error ** or
+** Justification Gap **) .
+
+** b . Detailed Verification Log **
+Following the summary , provide the full , step - by - step
+verification log as defined in the Core Instructions .
+When you refer to a specific part of the solution ,
+** quote the relevant text ** to make your reference
+clear before providing your detailed analysis of that
+part .
+
+** Example of the Required Summary Format **
+* This is a generic example to illustrate the required format .
+Your findings must be based on the actual solution provided
+below .*
+** Final Verdict :** The solution is ** invalid ** because it
+contains a Critical Error .
+** List of Findings :**
+*
+** Location :** " By interchanging the limit and the
+integral , we get ..."
+*
+** Issue :** Justification Gap - The solution
+interchanges a limit and an integral without providing
+justification , such as proving uniform convergence .
+*
+** Location :** " From $A > B$ and $C > D$ , it follows that
+$A - C > B - D$ "
+*
+** Issue :** Critical Error - This step is a logical
+fallacy . Subtracting inequalities in this manner is not
+a valid mathematical operation .
+======================================================================
+### Problem ###
+[ Paste the TeX for the problem statement here ]
+
+9
+
+======================================================================
+### Solution ###
+[ Paste the TeX for the solution to be verified here ]
+======================================================================
+### Verification Task Reminder ###
+Your task is to act as an IMO grader . Now , generate the
+** summary ** and the ** step - by - step verification log ** for
+the solution above . In your log , justify each correct step
+and explain in detail any errors or justification gaps you
+find , as specified in the instructions above .
+
+4
+
+Discussions on IMO 2025 Problems
+
+Problem 1. A line in the plane is called sunny if it is not parallel to any of the x-axis, the
+y-axis, and the line x + y = 0.
+Let n ≥ 3 be a given integer. Determine all nonnegative integers k such that there exist
+n distinct lines in the plane satisfying both the following:
+• For all positive integers a and b with a + b ≤ n + 1, the point (a, b) is on at least one
+of the lines; and
+• Exactly k of the lines are sunny.
+Immediately after sending the problem statement to the model, we added an extra sentence “Let us try to solve the problem by induction.” Does this sentence provide hint or
+guidance to the model? The answer is both yes and no. This combinatorial problem can be
+solved by mathematical induction. Thus, the extra sentence is certainly helpful in the sense
+of pointing the model to the correct direction.
+However, one can also argue that the italicized sentence (as a prompt) does not provide
+any essential help other than reducing computational resource usage. Imagine you have a
+multi-agent system aiming at solving a difficult problem. Such task usually requires a lot
+of exploration: One should have different agents try different methods in the hope that
+one of them can find a promising path. For any proposition that holds for positive integers,
+mathematical induction is a standard and often effective method. Thus, a multi-agent system
+should assign at least one agent to consider induction if it looks like a viable approach. After
+all, induction is very general technique, not limited to the problem we are trying to solve.
+Problem 2. Let Ω and Γ be circles with centers M and N , respectively, such that the radius
+of Ω is less than the radius of Γ. Suppose circles Ω and Γ intersect at two distinct points
+10
+
+A and B. Let M N intersect Ω at C and Γ at D, such that points C, M , N , and D lie on
+the line in that order. Let P be the circumcenter of triangle ACD. Line AP intersects Ω
+again at E ̸= A. Line AP intersects Γ again at F ̸= A. Let H be the orthocenter of triangle
+P MN.
+Prove that the line through H parallel to AP is tangent to the circumcircle of triangle
+BEF .
+(The orthocenter of a triangle is the point of intersection of its altitudes.)
+Immediately after sending the problem statement to the model, we added an extra sentence “Let us try to solve the problem by analytic geometry.” Discussions similar to those
+under the preceding problem apply here. We acknowledge that this sentence provides hint
+to the model, but still argue that its major effect is to reduce computational resource usage.
+Analytic geometry is a quite general method for solving high-school geometry problems as
+long as the calculations are not too complicated. It is an idea that deserves a try.
+Large language models are actually good at doing straightforward calculations. For this
+particular problem, on our first try Gemini 2.5 Pro already gave us an almost correct answer
+up to some small calculation mistakes that were subsequently caught by the verifier. For AI,
+this is the easiest problem in IMO 2025.
+Problem 3. Let N denote the set of positive integers. A function f : N → N is said to be
+bonza if
+f (a) | ba − f (b)f (a)
+for all positive integers a and b.
+Determine the smallest real constant c such that f (n) ≤ cn for all bonza functions f and
+all positive integers n.
+Our pipeline is to sample a sufficient number of initial solutions and then make improvements iteratively. For this problem, we sampled 20 times and succeeded in obtaining a
+rigorous solution within our approach. Note that MathAerna [13] observed that if sampling
+32 times, one can directly get a rigorous solution with 50% probability. We do not need to
+sample this many times because we iteratively improve our solution. For us, as long as the
+initial solution has substantial overlap with a correct approach, there is hope that we can
+succeed.
+We do not have specific comments for the three problems below. We include the problem
+statements for completeness.
+Problem 4. A proper divisor of a positive integer N is a positive divisor of N other than
+N itself.
+The infinite sequence a1 , a2 , . . . consists of positive integers, each of which has at least
+three proper divisors. For each n ≥ 1, the integer an+1 is the sum of the three largest proper
+divisors of an .
+Determine all possible values of a1 .
+
+11
+
+Problem 5. Alice and Bazza are playing the inekoalaty game, a two-player game whose
+rules depend on a positive real number λ which is known to both players. On the nth turn of
+the game (starting with n = 1) the following happens:
+• If n is odd, Alice chooses a nonnegative real number xn such that
+x1 + x2 + · · · + xn ≤ λn.
+• If n is even, Bazza chooses a nonnegative real number xn such that
+x21 + x22 + · · · + x2n ≤ n.
+If a player cannot choose a suitable number xn , the game ends and the other player wins.
+If the game goes forever, neither player wins. All chosen numbers are known to both players.
+Determine all values of λ for which Alice has a winning strategy and all those for which
+Bazza has a winning strategy.
+Problem 6. Consider a 2025 × 2025 grid of unit squares. Matilda wishes to place on the
+grid some rectangular tiles, possibly of different sizes, such that each side of every tile lies
+on a grid line and every unit square is covered by at most one tile.
+Determine the minimum number of tiles Matilda needs to place so that each row and each
+column of the grid has exactly one unit square that is not covered by any tile.
+
+5
+
+Gemini 2.5 Pro Solutions to the Problems
+
+The solutions outputted by Gemini 2.5 Pro are in a combination of Markdown and TeX
+format. Problems 1-5 are solved.
+
+5.1
+
+Problem 1
+
+Let Sn = {(a, b) ∈ Z2 | a ≥ 1, b ≥ 1, a + b ≤ n + 1}. A line is *sunny* if its slope is not 0, ∞,
+or −1. We seek the set of non-negative integers k such that for a given integer n ≥ 3, there
+exist n distinct lines covering Sn , exactly k of which are sunny.
+**Part 1: Reduction to a Core Problem**
+Let L be a set of n distinct lines covering Sn . The *principal boundary lines* of Sn are
+the lines x = 1, y = 1, and x + y = n + 1. These are all non-sunny.
+**Lemma:** If a principal boundary line L of Sn is in L, then there exists a set of n − 1
+distinct lines L′ that covers Sn−1 and has the same number of sunny lines as L.
+*Proof.* Let k be the number of sunny lines in L. The line L is not sunny. 1. Suppose
+L is the line x = 1. This line covers the points {(1, b) | 1 ≤ b ≤ n}. The remaining n − 1
+lines in L \ {L} must cover the set Sn′ = {(a, b) ∈ Sn | a ≥ 2}. The affine transformation
+ϕ(a, b) = (a − 1, b) is a bijection from Sn′ to Sn−1 . Let L′ be the set of lines obtained by
+transforming the lines in L \ {L}. A point (x′ , y ′ ) is on a transformed line l′ if its pre-image
+12
+
+under ϕ, which is (x′ + 1, y ′ ), is on the original line l. If l has equation Ax + By + C = 0,
+the transformed line l′ has equation A(x + 1) + By + C = 0. This transformation preserves
+the slope of any line, so the number of sunny lines in L′ is k. The lines in L′ are distinct:
+if l1 : A1 x + B1 y + C1 = 0 and l2 : A2 x + B2 y + C2 = 0 are distinct lines in L \ {L}, their
+images are l1′ : A1 x + B1 y + (A1 + C1 ) = 0 and l2′ : A2 x + B2 y + (A2 + C2 ) = 0. If l1′ = l2′ ,
+their coefficients are proportional, so (A1 , B1 , A1 + C1 ) = λ(A2 , B2 , A2 + C2 ) for some λ ̸= 0.
+This implies A1 = λA2 , B1 = λB2 , and A1 + C1 = λ(A2 + C2 ). Substituting the first into
+the third gives λA2 + C1 = λA2 + λC2 , so C1 = λC2 . Thus (A1 , B1 , C1 ) = λ(A2 , B2 , C2 ),
+contradicting the distinctness of l1 , l2 . 2. If L is y = 1, a symmetric argument with the
+transformation (a, b) 7→ (a, b − 1) applies. 3. If L is x + y = n + 1, it covers the points
+{(a, b) ∈ Sn | a + b = n + 1}. The other n − 1 lines must cover the remaining points, which
+form the set {(a, b) ∈ Sn | a + b ≤ n} = Sn−1 . Thus, L′ = L \ {L} is a set of n − 1 distinct
+lines covering Sn−1 with k sunny lines.
+By repeatedly applying this lemma, any configuration for Sn can be reduced. This process
+terminates when we obtain a set of m lines covering Sm (for some m ≤ n) where none of the
+lines are principal boundary lines of Sm . The number of sunny lines in this new configuration
+is still k.
+Let Lm be such a set of m lines covering Sm . Let Cm,x = {(1, b) | 1 ≤ b ≤ m}. These
+m points must be covered by Lm . Since x = 1 ∈
+/ Lm , any vertical line in Lm (of the form
+x = c, c ̸= 1) misses all points in Cm,x . Each of the non-vertical lines in Lm can cover at most
+one point of Cm,x . If there are v vertical lines in Lm , then the remaining m−v lines must cover
+all m points, so m − v ≥ m, which implies v = 0. Thus, Lm contains no vertical lines (slope
+∞). By a symmetric argument considering Cm,y = {(a, 1) | 1 ≤ a ≤ m}, we deduce Lm
+contains no horizontal lines (slope 0). By considering Cm,sum = {(a, b) ∈ Sm | a+b = m+1},
+we deduce Lm contains no lines of slope −1. Therefore, all m lines in Lm must be sunny.
+This implies k = m. The problem reduces to finding for which non-negative integers k it is
+possible to cover Sk with k distinct sunny lines, none of which are principal boundary lines
+of Sk .
+**Part 2: Analysis of the Core Problem**
+* **k = 0:** S0 = ∅. This is covered by 0 lines. So k = 0 is possible. * **k = 1:**
+S1 = {(1, 1)}. The line y = x is sunny, covers (1, 1), and is not a principal boundary
+line of S1 (which are x = 1, y = 1, x + y = 2). So k = 1 is possible. * **k = 2:**
+S2 = {(1, 1), (1, 2), (2, 1)}. We need to cover these three points with two distinct sunny lines,
+neither of which can be a principal boundary line of S2 (x = 1, y = 1, x + y = 3). A line
+passing through any two of the points in S2 must be one of these three principal boundary
+lines, which are non-sunny. Therefore, a sunny line can pass through at most one point of S2 .
+Consequently, two sunny lines can cover at most two points, leaving at least one point of S2
+uncovered. So k = 2 is impossible. * **k = 3:** S3 = {(1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (3, 1)}.
+The following three lines are sunny, distinct, not principal boundary lines of S3 , and cover S3 :
+L1 : y = −2x + 5 (covers (1, 3), (2, 1)) L2 : y = x (covers (1, 1), (2, 2)) L3 : x + 2y = 5 (covers
+(1, 2), (3, 1)) So k = 3 is possible. * **k ≥ 4:** Assume there exists a set L of k distinct sunny
+lines covering Sk , with no principal boundary lines. As argued, each line in L must intersect
+
+13
+
+each of the sets Cy = {(i, 1)}ki=1 , Cx = {(1, j)}kj=1 , and Cs = {(p, k + 1 − p)}kp=1 at exactly
+one point. We can label the lines Li for i ∈ {1, . . . , k} such that Li is the unique line in L
+passing through (i, 1). For each i, Li must also pass through a unique point (1, σ(i)) ∈ Cx
+and a unique point (π(i), k + 1 − π(i)) ∈ Cs . The maps σ, π : {1, . . . , k} → {1, . . . , k} must
+be permutations.
+These permutations must satisfy several properties: 1. L1 passes through (1, 1), so
+σ(1) = 1. 2. Lk passes through (k, 1), which is also in Cs . Thus, (π(k), k + 1 − π(k)) = (k, 1),
+which implies π(k) = k. 3. There is a unique line Lj passing through (1, k) ∈ Cx , so σ(j) = k.
+The point (1, k) is also in Cs , so for Lj , (π(j), k + 1 − π(j)) = (1, k), which implies π(j) = 1.
+Since σ(1) = 1 ̸= k and π(k) = k ̸= 1, we have j ̸= 1, k, so j ∈ {2, . . . , k − 1}. 4. For
+i ∈ {2, . . . , k}, if σ(i) = i, Li would pass through (i, 1) and (1, i), giving it slope −1, which
+is not allowed. So σ(i) ̸= i for i ≥ 2. 5. For i ∈ {1, . . . , k − 1}, if π(i) = i, Li would pass
+through (i, 1) and (i, k + 1 − i), making it a vertical line, which is not allowed. So π(i) ̸= i
+for i ≤ k − 1.
+For any i ∈ {1, . . . , k}, the three points P1 = (i, 1), P2 = (1, σ(i)), and P3 = (π(i), k +
+1 − π(i)) must be collinear. For i ∈ {2, . . . , k − 1} \ {j}, these three points are distinct. To
+prove this: - P1 = P2 =⇒ i = 1, but i ≥ 2. - P1 = P3 =⇒ π(i) = i, but π(i) ̸= i for
+i ≤ k − 1. - P2 = P3 =⇒ π(i) = 1 and σ(i) = k. By definition of j, this means i = j. But
+we consider i ̸= j. Thus, for i ∈ {2, . . . , k − 1} \ {j}, the points are distinct. Collinearity
+= k+1−π(i)−1
+. This gives σ(i) = 1 + (i − 1) k−π(i)
+.
+implies their slopes are equal: σ(i)−1
+1−i
+π(i)−i
+i−π(i)
+**Step 1: Show j = k − 1.** Assume for contradiction that j ̸= k − 1. Then the formula
+k−π(k−1)
+. From the properties of π:
+for σ(i) is valid for i = k − 1. σ(k − 1) = 1 + (k − 2) k−1−π(k−1)
+π(k − 1) ∈ {1, . . . , k}, π(k − 1) ̸= π(j) = 1, π(k − 1) ̸= π(k) = k, and π(k − 1) ̸= k − 1.
+So π(k − 1) ∈ {2, . . . , k − 2}. Let d = k − 1 − π(k − 1). Then d ∈ {1, . . . , k − 3}.
+σ(k − 1) = 1 + (k − 2) k−(k−1−d)
+= 1 + (k − 2) d+1
+= 1 + (k − 2)(1 + d1 ) = k − 1 + k−2
+. Since
+d
+d
+d
+k−2
+1
+≥
+=
+1
++
+>
+1.
+So
+σ(k
+−
+1)
+>
+k
+−
+1
++
+1
+=
+k.
+This
+k ≥ 4, we have d ≤ k − 3, so k−2
+d
+k−3
+k−3
+contradicts σ(k − 1) ∈ {1, . . . , k}. Thus, our assumption was false. We must have j = k − 1.
+**Step 2: Derive a final contradiction.** We have established that for k ≥ 4, it must be
+that j = k − 1, which means σ(k − 1) = k and π(k − 1) = 1. Consider i = 2. Since k ≥ 4,
+j = k −1 ≥ 3, so j ̸= 2. The formula for σ(i) is valid for i = 2: σ(2) = 1+ k−π(2)
+. Since π is a
+2−π(2)
+permutation, its image on {1, . . . , k−2} is {1, . . . , k}\{π(k−1), π(k)}. With π(k−1) = 1 and
+π(k) = k, we have π({1, . . . , k − 2}) = {2, . . . , k − 1}. So π(2) ∈ {2, . . . , k − 1}. By property
+5, π(2) ̸= 2. Thus π(2) ∈ {3, . . . , k − 1}. Let d′ = π(2) − 2. Then d′ ∈ {1, . . . , k − 3}. The
+
+′ +2)
+′
+denominator is 2 − π(2) = −d′ . σ(2) = 1 + k−(d
+= 1 − k−dd′ −2 = 1 − k−2
+− 1 = 2 − k−2
+.
+−d′
+d′
+d′
+k−2
+k−2
+1
+k−2
+′
+Since d ≤ k − 3, we have d′ ≥ k−3 = 1 + k−3 > 1 for k ≥ 4. So σ(2) = 2 − d′ < 2 − 1 = 1.
+This contradicts σ(2) ∈ {1, . . . , k}. This final contradiction shows that no such configuration
+is possible for k ≥ 4.
+**Part 3: Constructions for general n ≥ 3**
+The set of possible values for k is {0, 1, 3}. We now show these are all possible for any
+n ≥ 3.
+* **k = 0:** Let L = {x = i | i = 1, 2, . . . , n}. These are n distinct non-sunny lines.
+Any point (a, b) ∈ Sn has 1 ≤ a ≤ n, so it lies on the line x = a ∈ L. * **k = 1:** Let
+14
+
+L = {x = i | i = 1, . . . , n − 1} ∪ {y = x − (n − 1)}. The first n − 1 lines are non-sunny
+and cover all points (a, b) ∈ Sn with a ≤ n − 1. The only points in Sn not covered are
+those with a ≥ n. If (a, b) ∈ Sn and a ≥ n, then n + b ≤ a + b ≤ n + 1, which implies
+b ≤ 1. Since b ≥ 1, we must have b = 1. Then a + 1 ≤ n + 1 =⇒ a ≤ n. The
+only uncovered point is (n, 1). The line y = x − (n − 1) has slope 1 (sunny), is distinct
+from the other lines, and passes through (n, 1) since 1 = n − (n − 1). * **k = 3:** Let
+Lns = {x + y = c | c = 5, 6, . . . , n + 1}. This is a set of n − 3 distinct non-sunny lines
+(if n = 3, this set is empty). These lines cover all points (a, b) ∈ Sn with a + b ≥ 5. The
+remaining points to be covered are U = {(a, b) ∈ Sn | a + b ≤ 4}. This set is precisely S3 . As
+shown in Part 2, S3 can be covered by 3 distinct sunny lines. Let Ls be this set of 3 lines.
+Then L = Lns ∪ Ls is a set of (n − 3) + 3 = n lines covering Sn . The lines in Ls have slopes
+different from −1, so they are distinct from lines in Lns . This construction provides exactly
+3 sunny lines.
+Thus, for any integer n ≥ 3, configurations with k ∈ {0, 1, 3} sunny lines are possible.
+
+5.2
+
+Problem 2
+
+**1. Coordinate System and Geometric Setup**
+We establish a Cartesian coordinate system. Let the line of centers M N be the x-axis,
+and the common chord AB be the y-axis. Let their intersection be the origin O(0, 0).
+* The points of intersection of the circles are A(0, a) and B(0, −a) for some a > 0. * The
+centers of the circles are M (m, 0) and
+0) and passes
+√ N (n, 0). * Circle Ω has center M (m,
+2
+2
+2
+through A(0, a). Its radius is RΩ = m + a . The equation of Ω is (x − m) + y 2 = m2 + a2 ,
+2
+2
+which simplifies to x2 − 2mx
+0) and passes through
+√ + y = a . * Circle Γ has center N (n,
+2
+2
+2
+A(0, a). Its radius is RΓ = n + a . The equation of Γ is (x − n) + y 2 = n2 + a2 , which
+simplifies to x2 − 2nx + y 2 = a2 . * The line M N is the x-axis. The points C and D lie on
+the x-axis. Let their coordinates be C(c, 0) and D(d, 0). * The condition that C, M, N, D
+lie on the line in that order implies their x-coordinates are ordered: c < m < n < d. * C
+is an intersection of√Ω with the x-axis. Its coordinate c is a root of√x2 − 2mx − a2 = 0.
+The roots are m ± m2 + a2 . Since c < m, we must have c = m − m2 + a2 . * D is an
+intersection
+root of x2 − 2nx − a2 = 0. The roots
+√ of Γ with the x-axis. Its coordinate d is a √
+2
+2
+are n ± n + a . Since d > n, we must have d = n + n2 + a2 . * From the equations for c
+and d, we have c2 − 2mc − a2 = 0 and d2 − 2nd − a2 = 0. Since c < 0 and d > 0, c, d ̸= 0.
+2 −a2
+2 −a2
+We can express m and n as: m = c 2c
+and n = d 2d
+.
+**2. Preliminary Geometric and Algebraic Properties**
+We establish two key properties derived from the problem’s conditions.
+* **Lemma 1:** c+d ̸= 0. * **Proof:** The condition RΩ < RΓ implies m2 +a2 < n2 +a2 ,
+so m2 < n2 . * The ordering C, M, N, D implies m < n. * From m < n and m2 < n2 , we
+have n2 − m2 > 0, so (n − m)(n + m) > 0.√Since n − m√> 0, we must have n + m > 0. * Also,
+m2 < n2 =⇒ m2 + a2 < n2 + a2 =⇒ m2 + a2 < n2 +√
+a2 . * Assume for contradiction
+√
+2 + a2 ) + (n +
+that c + d = 0. √
+Using the expressions
+for
+c
+and
+d:
+(m
+−
+m
+n2 + a2 ) =
+√
+2
+2
+2
+2
+0 =⇒ m + n = m + a − n + a . * The left side, m + n, is positive. The right side,
+
+15
+
+√
+
+√
+m2 + a2 − n2 + a2 , is negative. This is a contradiction. * Thus, our assumption is false,
+and c + d ̸= 0.
+2 −a2
+2 −a2
+* **Lemma 2:** a2 + cd < 0. * **Proof:** The condition m < n implies c 2c
+< d 2d
+.
+* From their definitions, c < 0 and d > 0, so cd < 0. Multiplying the inequality by 2cd
+(which is negative) reverses the inequality sign: d(c2 − a2 ) > c(d2 − a2 ) =⇒ c2 d − a2 d >
+cd2 − a2 c =⇒ cd(c − d) > −a2 (c − d). * Since c < d, we have c − d < 0. Dividing by c − d
+reverses the inequality sign again: cd < −a2 =⇒ a2 + cd < 0.
+**3. Coordinates of P and H**
+* Let P (xP , yP ) be the circumcenter of △ACD with vertices A(0, a), C(c, 0), D(d, 0).
+. So,
+* P lies on the perpendicular bisector of segment CD, which is the line x = c+d
+2
+c+d
+2
+2
+2
+2
+2
+xP = 2 . * The condition P A = P C gives (xP − 0) + (yP − a) = (xP − c) + (yP − 0)2 .
+x2P + yP2 − 2ayP + a2 = x2P − 2cxP + c2 + yP2 =⇒ −2ayP + a2 = −2cxP + c2 . Substituting
+
+c+d a2 +cd
+a2 +cd
+c+d
+2
+2
+xP = 2 : −2ayP + a = −c(c + d) + c = −cd =⇒ yP = 2a . So, P 2 , 2a .
+* Let H(xH , yH ) be the orthocenter of △P M N with vertices P (xP , yP ), M (m, 0), N (n, 0).
+* The altitude from P to M N (on the x-axis) is the line x = xP . Thus, xH = xP = c+d
+. *
+2
+The altitude from M is perpendicular to P N . The slope of this altitude is − xPyP−n . The line
+P −n)
+is y − 0 = − xPyP−n (x − m). * H lies on this line, so yH = − xPyP−n (xH − m) = − (xP −m)(x
+. *
+yP
+2
+
+2
+
+−a )
+−a
+We express the numerator in terms of a, c, d: xP − m = c+d
+− c 2c
+= c(c+d)−(c
+= cd+a
+.
+2
+2c
+2c
+d(c+d)−(d2 −a2 )
+c+d
+d2 −a2
+cd+a2
+xP − n = 2 −
+= 2d . * Substituting these into the expression for
+ 2d =
+
+2d
+2
+
+2
+
+2
+
+2 )2
+2 +cd
+cd+a2
+cd+a2
+= − (cd+a
+. Using yP = a 2a
+and a2 + cd ̸= 0 (from Lemma
+2c
+2d
+4cdyP
+2 )2
+a(a2 +cd)
+2a
+. * So, the coordinates of the orthocenter are
+2), we get: yH = − (cd+a
+2 +cd = −
+4cd
+a
+2cd
+
+
+2
++cd)
+.
+H c+d
+, − a(a2cd
+2
+
+yH : yH = − y1P
+
+**4. The Line AP and its Intersections**
+* Since a ̸= 0 and c + d ̸= 0 (Lemma 1), the slope of line AP , denoted kAP , is welldefined: kAP = xyPP −a
+=
+−0
+
+a2 +cd
+−a
+2a
+c+d
+2
+
+2
+
+2
+
+2
+
+cd−a
++cd−2a
+= a(c+d)
+. * The line AP has equation y =
+= a a(c+d)
+
+kAP x + a. E(xE , yE ) and F (xF , yF ) are the other intersection points of this line with Ω and
+Γ respectively. * To find E, substitute y = kAP x+a into the equation of Ω, x2 −2mx+y 2 = a2 :
+2
+x2 − 2mx + (kAP x + a)2 = a2 =⇒ x((1 + kAP
+)x − 2m + 2akAP ) = 0. The roots are x = 0 (for
+2(m−akAP )
+AP )
+point A) and xE = 1+k2
+. * Similarly, for F on Γ (x2 − 2nx + y 2 = a2 ): xF = 2(n−ak
+.
+2
+1+k
+AP
+AP
+**5. Auxiliary Algebraic Identities**
+We derive identities
+simplify subsequent calculations. * **Identity 1:** m −
+
+that will
+2 +a2 )(c−d)
+(c2 −a2 )(c+d)−2c(cd−a2 )
+c2 −a2
+cd−a2
+akAP = 2c − a a(c+d) =
+= (c 2c(c+d)
+. * **Identity 2:** n − akAP =
+2c(c+d)
+
+2
+(d2 −a2 )(c+d)−2d(cd−a2 )
+(d2 +a2 )(d−c)
+d2 −a2
+cd−a2
+cd−a2
+2
+−
+=
+=
+.
+*
+**Identity
+3:**
+1+k
+=
+1+
+=
+AP
+2d
+c+d
+2d(c+d)
+2d(c+d)
+a(c+d)
+2 )
+a(1+kAP
+a2 (c+d)2 +(cd−a2 )2
+(c2 +a2 )(d2 +a2 )
+2a
+cd−a2
+cd−a2
+=
+.
+*
+**Identity
+4:**
+k
++
+=
++
+= a(c+d)
++
+AP
+2
+2
+2
+2
+a (c+d)
+a (c+d)
+xE
+a(c+d)
+m−akAP
+.
+2 +a2 )
+2 )(c−d)+2c(d2 +a2 )
+2 (c+d)
+2
+(c2 +a2 )(d2 +a2 )
+(c2 +a2 )(c−d)
+2c(d
+(cd−a
+cd(c+d)+a
+cd−a
+a a2 (c+d)2
+= a(c+d)
++ a(c+d)(c−d) =
+= a(c+d)(c−d) =
+2c(c+d)
+a(c+d)(c−d)
+2
+cd+a
+.
+a(c−d)
+
+**6. The Circumcircle of △BEF **
+16
+
+Let K(xK , yK ) be the circumcenter of △BEF . K lies on the perpendicular bisectors of
+BE and BF . The perpendicular bisector of BE is given by KB 2 = KE 2 , which simplifies
+to 2xK xE + 2yK (yE + a) = x2E + yE2 − a2 + 2a2 = 2mxE + 2a2 . Using yE = kAP xE + a,
+we get xK xE + yK (kAP xE + 2a) = mxE + a2 . This is incorrect. Let’s re-derive. KB 2 =
+2
+KE 2 =⇒ x2K + (yK + a)2 = (xK − xE )2 + (yK − yE )2 . x2K + yK
++ 2ayK + a2 = x2K −
+2
+2
+2
+2
+2
+2xK xE + xE + yK − 2yK yE + yE . 2ayK + a = −2xK xE + xE − 2yK yE + yE2 . Since E
+is on Ω, x2E + yE2 = 2mxE + a2 . 2ayK + a2 = −2xK xE + 2mxE + a2 − 2yK yE . 2ayK =
+−2xK xE + 2mxE − 2yK yE . ayK = −xK xE + mxE − yK yE . ayK = −xK xE + mxE −
+yK (kAP xE + a) =⇒ 2ayK = −xK xE + mxE − yK kAP xE . xE (xK + yK kAP ) + 2ayK = mxE .
+Dividing by xE ̸= 0: (1) xK + yK (kAP + x2aE ) = m. A similar derivation for the perpendicular
+bisector of BF (using point F on Γ) yields: (2) xK + yK (kAP + x2aF ) = n. Subtracting (1)
+F
+, we get
+from (2): yK ( x2aF − x2aE ) = n − m =⇒ 2ayK xxEE−x
+= n − m. Using xE − xF = 2(m−n)
+xF
+1+k2
+AP
+
+2 )
+2(m−n)/(1+kAP
+x x (1+k2 )
+AP )(n−akAP )
+2ayK
+.
+= n − m. Since m ̸= n, we find yK = − E F 4a AP = − (m−aka(1+k
+2
+xE xF
+AP )
+
+Using Identities 1, 2, 3: yK = − a1
+
+ 2
+
+(c +a2 )(c−d)
+2c(c+d)
+
+
+
+(d2 +a2 )(d−c)
+2d(c+d)
+
+. 2
+
+(c +a2 )(d2 +a2 )
+a2 (c+d)2
+
+2
+
+2
+
+2
+
+2
+
+= a(c−d)
+. From
+4cd
+2
+
+2
+
+cd+a
+−a
+cd+a
+(1) and Identity 4: xK = m − yK (kAP + x2aE ) = m − yK a(c−d)
+. xK = c 2c
+− a(c−d)
+=
+4cd a(c−d)
+(c−d)(cd+a2 )
+2d(c2 −a2 )−(c−d)(cd+a2 )
+cd(c+d)−a2 (c+d)
+(cd−a2 )(c+d)
+c2 −a2
+−
+=
+=
+=
+. The radius squared
+2c
+4cd
+4cd
+4cd
+4cd
+2
+2
+2
+2
+2
+2
+of the circumcircle of △BEF is RK = KB = xK + (yK + a) . yK + a = a(c−d)
++ a = a(c+d)
+.
+4cd
+4cd
+
+2 
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+RK
+= (cd−a4cd)(c+d) + a(c+d)
+((cd − a2 )2 + a2 (c + d)2 ) = (c+d) (c16c+a2 d2)(d +a ) .
+= (c+d)
+4cd
+(4cd)2
+
+**7. The Tangency Proof**
+The line ℓH passes through H(xH , yH ) and is parallel to AP . Its equation is y − yH =
+kAP (x − xH ), which can be written as kAP x − y − (kAP xH − yH ) = 0. This line is tangent to the circumcircle of △BEF (center K, radius RK ) if the square of the distance
+2
+AP xH −yH ))
+2
+. The squared distance is (kAP xK −yKk2−(k+1
+from K to ℓH is RK
+. The condition
+AP
+2
+2
+for tangency is (kAP (xK − xH ) − (yK − yH ))2 = RK
+(1 + kAP
+). Let’s compute the terms
+2)
+2
+(c+d)(cd−a2 −2cd)
+(cd−a )(c+d)
+c+d
+− 2 =
+= − (c+d)(cd+a
+.
+on the left side (LHS).
+4cd
+4cd
+4cd
+ xK − xH =
+2
+
+2
+
+2
+
+2
+
+2
+
+2
+
+2
+
+2
+
++cd)
+= a(c −2cd+d4cd)+2a(a +cd) = a(c +d4cd+2a ) . kAP (xK − xH ) =
+yK − yH = a(c−d)
+− − a(a2cd
+4cd
+
+
+2 )(cd+a2 )
+2 d2 −a4
+2 d2 −a4
+(c+d)(cd+a2 )
+cd−a2
+−
+= − (cd−a4acd
+= − c 4acd
+. kAP (xK − xH ) − (yK − yH ) = − c 4acd
+−
+a(c+d)
+4cd
+
+
+2
+2 )(d2 +a2 )
+2
+2 )(d2 +a2 ) 2
+2
+2 2 2 +a2 )2
+2 2
+4
+2 c2 +a2 d2 +2a4
+a2 (c2 +d2 +2a2 )
+= − c d −a +a4acd
+= − (c +a4acd
+. LHS = − (c +a4acd
+= (c +a16a) 2(d
+.
+4acd
+c2 d2
+2
+2
+2
+Now we compute the
+side (RHS)
+using RK
+and Identity 3: RHS = RK
+(1 + kAP
+) =
+  right
+
+
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+(c +a ) (d +a )
+(c+d) (c +a )(d +a )
+(c +a )(d +a )
+=
+. Since LHS = RHS, the tangency con16c2 d2
+a2 (c+d)2
+16a2 c2 d2
+dition is satisfied. This completes the proof.
+
+5.3
+
+Problem 3
+
+Let P (a, b) be the assertion f (a) | ba − f (b)f (a) .
+**Step 1: Prove that f (1) = 1** Let C = f (1). Assume for contradiction that C > 1.
+Let p be a prime divisor of C. The assertion P (p, 1) states f (p) | 1p − f (1)f (p) , which is
+17
+
+f (p) | 1 − C f (p) . Since p | C, we have C ≡ 0 (mod p), so 1 − C f (p) ≡ 1 (mod p). If p were a
+divisor of f (p), then p would have to divide 1 − C f (p) , which is impossible as 1 − C f (p) ≡ 1
+(mod p). Thus, p ∤ f (p).
+Now consider the assertion P (1, p), which states f (1) | p − f (p)f (1) , i.e., C | p − f (p)C .
+Since p | C, this implies p | p − f (p)C , which in turn implies p | f (p)C . As p is prime, this
+means p | f (p). We have derived a contradiction: p ∤ f (p) and p | f (p). Therefore, the
+assumption C > 1 must be false. Since f (1) ∈ N, we must have f (1) = 1.
+**Step 2: Properties of bonza functions** Let Sf = {p prime | ∃n ∈ N, p | f (n)}.
+**Property 1:** For any p ∈ Sf and b ∈ N, if p | f (b), then p | b. *Proof:* Let p ∈ Sf .
+By definition, there exists an a0 ∈ N such that p | f (a0 ). The bonza condition P (a0 , b) is
+f (a0 ) | ba0 − f (b)f (a0 ) . As p | f (a0 ), we have p | ba0 − f (b)f (a0 ) . If we assume p | f (b), this
+implies p | ba0 , and since p is prime, p | b.
+**Lemma A:** For any prime p ∈ Sf , we have f (b) ≡ b (mod p) for all b ∈ N. *Proof:*
+Let p ∈ Sf . First, we show f (p) is a power of p. If f (p) = 1, then for any a with p | f (a),
+P (a, p) =⇒ f (a) | pa − f (p)f (a) = pa − 1, which contradicts p | f (a). So f (p) > 1. Let q be
+a prime divisor of f (p). Then q ∈ Sf . By Property 1, since q | f (p), we must have q | p. As
+p, q are primes, q = p. Thus f (p) = pk for some k ≥ 1. Now, P (p, b) =⇒ f (p) | bp − f (b)f (p) ,
+k
+k
+so pk | bp − f (b)p . This implies bp ≡ f (b)p (mod p). By Fermat’s Little Theorem, bp ≡ b
+k
+(mod p) and f (b)p ≡ f (b) (mod p). Thus, b ≡ f (b) (mod p).
+**Lemma B:** For any prime q ∈
+/ Sf , we have f (q) = 1. *Proof:* Let q be a prime with
+q∈
+/ Sf . Suppose f (q) > 1. Let p be a prime divisor of f (q). Then p ∈ Sf . By Property 1,
+since p | f (q), we must have p | q. As p, q are primes, p = q. This contradicts the fact that
+p ∈ Sf and q ∈
+/ Sf . Thus, f (q) = 1.
+**Step 3: Classification of bonza functions** For any p ∈ Sf and any prime q ∈
+/ Sf , by
+Lemma A, f (q) ≡ q (mod p). By Lemma B, f (q) = 1. Thus, we have the crucial condition:
+∀p ∈ Sf , ∀q ∈
+/ Sf (prime),
+
+q≡1
+
+(mod p) (∗)
+
+We analyze the possible structures for the set of primes Sf . 1. Sf = ∅: Condition (*) is
+vacuously true. This is a possible case. 2. Sf is the set of all primes: Condition (*) is
+vacuously true as there are no primes q ∈
+/ Sf . This is a possible case. 3. Sf is a non-empty
+proper subset of the set of all primes. a) Suppose Sf is an infinite proper subset. Let q be
+a prime such that q ∈
+/ Sf . By (*), q ≡ 1 (mod p) for all p ∈ Sf . This means every prime
+p ∈ Sf is a divisor of q − 1. Since Sf is infinite, this implies the integer q − 1 has infinitely
+many distinct prime divisors, which is impossible. Thus, Sf cannot be an infinite proper
+subset. b) Suppose Sf is a finite, non-empty proper subset. Let Sf = {p1 , . . . , pr }. Let
+P = p1 p2 . . . pr . Condition (*) implies that any prime q ∈
+/ Sf must satisfy q ≡ 1 (mod P ).
+If P > 2, then Euler’s totient function ϕ(P ) > 1. This means there exists an integer a with
+1 < a < P and gcd(a, P ) = 1. By Dirichlet’s theorem on arithmetic progressions, there are
+infinitely many primes q of the form kP + a. We can choose such a prime q that is not in
+the finite set Sf . For this prime q, we have q ∈
+/ Sf , so by our condition, it must satisfy q ≡ 1
+(mod P ). But we chose q such that q ≡ a (mod P ). This leads to a ≡ 1 (mod P ), which
+contradicts our choice of a. Therefore, the assumption P > 2 must be false. We must have
+18
+
+P ≤ 2. Since Sf is non-empty, P ≥ 2. Thus, P = 2, which implies Sf = {2}. Thus, the only
+possibilities for Sf are ∅, {2}, or the set of all primes.
+**Step 4: Analysis of f (n)/n for each case** * **Case 1: Sf = ∅.** This implies that for
+all n, f (n) has no prime factors, so f (n) = 1. The function f (n) = 1 for all n is bonza, since
+1 | ba − 11 is always true. For this function, f (n)/n = 1/n ≤ 1. * **Case 2: Sf is the set of
+all primes.** For any prime p, Lemma A gives f (n) ≡ n (mod p). This means p | (f (n) − n)
+for all primes p. If f (n) ̸= n, then f (n) − n is a non-zero integer. A non-zero integer can
+only have a finite number of prime divisors. This forces f (n) − n = 0, so f (n) = n. The
+function f (n) = n is bonza, since a | ba − ba is true. For this function, f (n)/n = 1. * **Case
+3: Sf = {2}.** The range of f is a subset of {1} ∪ {2k | k ∈ N}. By Lemma A, f (n) ≡ n
+(mod 2). This implies f (n) = 1 for odd n, and f (n) = 2kn for some kn ≥ 1 for even n. Let n
+be an even integer. Let v2 (m) be the exponent of 2 in the prime factorization of m. 1. For
+any odd b, P (n, b) =⇒ f (n) | bn − f (b)f (n) . Since b is odd, f (b) = 1. So 2kn | bn − 1. This
+must hold for all odd b. Thus, kn ≤ minb odd v2 (bn − 1). Let n = 2s t with t odd, s ≥ 1. For
+s
+any odd b, let x = bt , which is also odd. We have v2 (bn − 1) = v2 (x2 − 1). It is a known
+k
+property that for an odd integer x and k ≥ 1, v2 (x2 − 1) = v2 (x2 − 1) + k − 1. Applying this
+with k = s, we get v2 (bn − 1) = v2 ((bt )2 − 1) + s − 1. To find the minimum value, we must
+minimize v2 ((bt )2 − 1) over odd b. The map ϕt : (Z/8Z)× → (Z/8Z)× given by ϕt (y) = y t
+is a permutation for any odd t. This is because for any y ∈ (Z/8Z)× , y 2 ≡ 1 (mod 8), so
+for t = 2k + 1, y t = y 2k+1 = (y 2 )k y ≡ y (mod 8). Thus, as b runs through odd integers, bt
+(mod 8) also takes on all values in {1, 3, 5, 7}. We can choose b such that bt ≡ 3 (mod 8).
+For such b, v2 ((bt )2 − 1) = v2 (32 − 1) = v2 (8) = 3. The minimum value of v2 ((bt )2 − 1)
+for bt ̸≡ 1 (mod 8) is 3. So, minb odd v2 (bn − 1) = 3 + s − 1 = s + 2 = v2 (n) + 2. Thus,
+kn ≤ v2 (n) + 2. 2. For b = 2, P (n, 2) =⇒ f (n) | 2n − f (2)f (n) . Let f (2) = 2k2 for some
+kn
+kn
+integer k2 ≥ 1. The condition is 2kn | 2n − 2k2 2 . This requires kn ≤ v2 (2n − 2k2 2 ). If
+kn
+n ̸= k2 2kn , then v2 (2n − 2k2 2 ) = min(n, k2 2kn ). The condition becomes kn ≤ min(n, k2 2kn ),
+which implies kn ≤ n. If n = k2 2kn , the divisibility is on 0, which holds for any kn . However,
+n = k2 2kn with k2 ≥ 1 implies n ≥ 2kn . Since 2x > x for all x ≥ 1, we have n > kn . In all
+cases, we must have kn ≤ n. Combining these constraints, for any bonza function in this
+class, f (n) ≤ 2min(n,v2 (n)+2) for even n.
+**Step 5: Construction of the maximal function and determination of c** Let’s define a
+function f0 based on the derived upper bound:
+(
+1
+if n is odd
+f0 (n) =
+2min(n,v2 (n)+2) if n is even
+Let km = min(m, v2 (m) + 2) for any even m. We verify that f0 is a bonza function. - If a is
+odd, f0 (a) = 1. The condition is 1 | ba − f0 (b)1 , which is always true. - If a is even and b is
+odd: f0 (a) = 2ka , f0 (b) = 1. We need 2ka | ba −1. By definition, ka ≤ v2 (a)+2. As established
+in Step 4, for any even a and odd b, v2 (ba − 1) ≥ v2 (a) + 2. Thus, ka ≤ v2 (a) + 2 ≤ v2 (ba − 1),
+ka
+so the condition holds. - If a, b are even: f0 (a) = 2ka , f0 (b) = 2kb . We need 2ka | ba − (2kb )2 .
+ka
+Let E = ba − 2kb 2 . We need to show v2 (E) ≥ ka . Let v2 (ba ) = av2 (b) and the exponent of
+2 in the second term is kb 2ka . If v2 (ba ) ̸= kb 2ka , then v2 (E) = min(v2 (ba ), kb 2ka ). We have
+19
+
+ka ≤ a ≤ av2 (b) = v2 (ba ) since v2 (b) ≥ 1. Also kb ≥ 1, so kb 2ka ≥ 2ka ≥ ka for ka ≥ 1. Thus
+ka ≤ v2 (E). If v2 (ba ) = kb 2ka , let vb = v2 (b) and m = b/2vb . The condition is avb = kb 2ka .
+ka
+E = ba − 2kb 2 = (m2vb )a − 2avb = ma 2avb − 2avb = 2avb (ma − 1). If m = 1, b is a power of 2,
+then E = 0 and 2ka | 0 holds. If m > 1, v2 (E) = avb + v2 (ma − 1). Since ka ≤ a ≤ avb , and
+v2 (ma − 1) ≥ 1 (as a is even, m is odd), we have ka ≤ v2 (E). Thus, f0 is a bonza function.
+Now we find supn f0 (n)/n. For odd n, f0 (n)/n = 1/n ≤ 1. For even n = 2s t with t odd,
+min(2s t,s+2)
+s ≥ 1: f0n(n) = 2 2s t
+. - If t ≥ 3, then 2s t > s + 2 for s ≥ 1. (Proof: g(s) = 3 · 2s − s − 2
+is increasing for s ≥ 1 and g(1) = 3 > 0. So 3 · 2s > s + 2. Then t · 2s ≥ 3 · 2s > s + 2.)
+s
+s+2
+min(2s ,s+2)
+. The inequality 2s ≥ s + 2
+So f0n(n) = 22s t = 4t ≤ 43 . - If t = 1, n = 2s . f02(2s ) = 2 2s
+holds for all integers s ≥ 2. (Proof by induction: for s = 2, 4 ≥ 4. Assume 2k ≥ k + 2 for
+k ≥ 2, then 2k+1 = 2 · 2k ≥ 2(k + 2) = 2k + 4 = (k + 3) + (k + 1) > k + 3.) For s = 1,
+min(2,3)
+2
+= 22 = 2. For s ≥ 2, since 2s ≥ s + 2, we have min(2s , s + 2) = s + 2.
+n = 2: f02(2) = 2 2
+s
+s+2
+So f02(2s ) = 2 2s = 4. This value of 4 is achieved for n = 4, 8, 16, . . . . For example, f0 (4) =
+2min(4,v2 (4)+2) = 2min(4,4) = 24 = 16, so f0 (4)/4 = 4.
+The supremum of f (n)/n over all bonza functions is 4. For any constant c < 4, the
+function f0 and n = 4 gives f0 (4) = 16 > 4c, so f0 (4) > cn. Thus, the smallest constant is
+c = 4.
+
+5.4
+
+Problem 4
+
+Let f (N ) be the sum of the three largest proper divisors of a positive integer N . The
+sequence is defined by an+1 = f (an ) for n ≥ 1. The problem requires that each an has at
+least three proper divisors. A proper divisor of N is any positive divisor of N except N itself.
+The condition that N has at least three proper divisors means that the number of divisors
+of N , denoted by d(N ), must satisfy d(N ) − 1 ≥ 3, so d(N ) ≥ 4.
+Let the divisors of N in increasing order be 1 = d1 < d2 < d3 < · · · < dk = N , where
+k = d(N ) ≥ 4. The proper divisors of N are {d1 , d2 , . . . , dk−1 }. The three largest proper
+divisors are dk−1 , dk−2 , dk−3 . The map d 7→ N/d is a bijection on the set of divisors of N that
+reverses the order. Therefore, the largest proper divisor is dk−1 = N/d2 , the second largest
+is dk−2 = N/d3 , and the third largest is dk−3 = N/d4 . This holds for any N with d(N ) ≥ 4.
+Thus, the sum of 
+the three largest
+ proper divisors is given by: f (N ) = dk−1 + dk−2 + dk−3 =
+N
+N
+1
+1
+1
+N
++ d3 + d4 = N d2 + d3 + d4 .
+d2
+**Lemma 1:** For any valid sequence, an must be even for all n ≥ 1. * **Proof:**
+Suppose ak is an odd integer for some k ≥ 1. All its divisors are odd, so its three largest
+proper divisors are odd. Their sum, ak+1 = f (ak ), is also odd. Therefore, if any term is odd,
+all subsequent terms are odd. Let N be an odd integer with d(N ) ≥ 4. Its smallest divisors
+greater than 1 are d2 , d3 , d4 . Since N is odd, all its divisors are odd. The smallest possible
+value for d2 is 3. Thus, d2 ≥ 3. Since d3 > d2 , d3 ≥ 5. Similarly, d4 > d3 , so d4 ≥ 7. The sum
+1
+71
++ d13 + d14 is maximized when d2 , d3 , d4 are minimized. Thus, d12 + d13 + d14 ≤ 13 + 51 + 17 = 105
+.
+d2
+71
+Therefore, f (N ) ≤ 105 N < N . So, if ak is odd, the sequence (an )n≥k is a strictly decreasing
+sequence of positive integers. Such a sequence must terminate, meaning it must produce a
+
+20
+
+term which does not satisfy d(an ) ≥ 4. Therefore, an infinite sequence is not possible if any
+term is odd.
+**Lemma 2:** For any valid sequence, an must be divisible by 3 for all n ≥ 1. *
+**Proof:** Suppose there is a term ak not divisible by 3. By Lemma 1, ak is even. Let am be
+any term with v3 (am ) = 0. Its smallest divisor is d2 = 2. Its divisors d3 , d4 are not multiples
+a < am . So, if
+of 3. Thus d3 ≥ 4 and d4 ≥ 5. am+1 = am ( 12 + d13 + d14 ) ≤ am ( 12 + 41 + 15 ) = 19
+20 m
+a term is not divisible by 3, the next term is strictly smaller.
+Now, consider the sequence (an )n≥k . If for all n ≥ k, v3 (an ) = 0, then the sequence
+is strictly decreasing. A strictly decreasing sequence of positive integers must terminate.
+This is a failure. Therefore, for the sequence to be infinite, there must be a first term am
+(with m ≥ k) such that v3 (am ) = 0 and v3 (am+1 ) > 0. For am+1 to gain a factor of 3, the
+numerator of the fraction in am+1 = am ( d12 + d13 + d14 ) must be divisible by 3. With d2 = 2,
+this means d3 d4 + 2d4 + 2d3 ≡ 0 (mod 3), which implies (d3 − 1)(d4 − 1) ≡ 1 (mod 3). This
+holds if and only if d3 ≡ 2 (mod 3) and d4 ≡ 2 (mod 3). If v2 (am ) ≥ 2, then d3 = 4 ≡ 1
+(mod 3). The condition is not met. So, for the transition to happen, the term am must
+have v2 (am ) = 1. In this case, d3 = p, the smallest odd prime factor of am . We need p ≡ 2
+(mod 3). d4 is the smallest divisor of am greater than p. We also need d4 ≡ 2 (mod 3). Let
+the prime factorization of am be 2 · pep · q eq · · · , where p < q < . . . are odd primes. The
+candidates for d4 are the smallest divisors of am greater than p. These are p2 (if ep ≥ 2),
+2p, and q (if am has a second odd prime factor q). Any other divisor of am greater than p is
+larger than one of these three. We check the congruences modulo 3, given p ≡ 2 (mod 3):
+- p2 ≡ 22 = 4 ≡ 1 (mod 3). - 2p ≡ 2(2) = 4 ≡ 1 (mod 3). So neither p2 nor 2p can be d4 .
+This implies that d4 must be q, the second smallest odd prime factor of am . For this to be
+the case, we must have q < p2 and q < 2p. And for the condition to be met, we must have
+q ≡ 2 (mod 3). So, if a term am with v2 = 1, v3 = 0 gains a factor of 3, its smallest two
+odd prime factors, p and q, must both be congruent to 2 (mod 3). In this case, d3 = p and
+d4 = q. Both are odd primes. Let’s check v2 (am+1 ) = v2 (am ) + v2 (pq + 2(p + q)) − v2 (2pq).
+We have v2 (am ) = 1. Since p, q are odd, pq is odd. p + q is a sum of two odd numbers, so
+it’s even. 2(p + q) is a multiple of 4. So pq + 2(p + q) is odd + (multiple of 4), which is odd.
+Thus v2 (pq + 2(p + q)) = 0. Also, v2 (2pq) = 1 since p, q are odd. v2 (am+1 ) = 1 + 0 − 1 = 0.
+So am+1 is odd. By Lemma 1, this leads to failure. In summary, if any term is not divisible
+by 3, the sequence must fail.
+**Lemma 3:** For any valid sequence, no term an can be divisible by 5. * **Proof:**
+By Lemmas 1 and 2, any term an must be divisible by 2 and 3. First, suppose v5 (ak ) = 0
+for some k ≥ 1. We show that v5 (ak+1 ) = 0. The smallest divisors of ak are d2 = 2, d3 = 3.
+d4 is the smallest divisor of ak greater than 3. Let p be the smallest prime factor of ak other
+than 2 or 3. Since v5 (ak ) = 0, p ≥ 7. The candidates for d4 are divisors of ak smaller than
+p, which can only be composed of primes 2 and 3. The smallest such divisor greater than
+3 is 4. - If v2 (ak ) ≥ 2, then 4 is a divisor of ak . Since 3 < 4 < p, we have d4 = 4. - If
+v2 (ak ) = 1, then 4 is not a divisor of ak . The smallest divisor greater than 3 must be 2 · 3 = 6
+or 32 = 9. Since 6 < 9 and 6 < p, d4 = 6. In either case, d4 is not a multiple of 5. If
+a . If d4 = 6, ak+1 = ak . Neither operation introduces a factor of 5. So if
+d4 = 4, ak+1 = 13
+12 k
+21
+
+v5 (ak ) = 0, then v5 (ak+1 ) = 0.
+Now, assume for contradiction that some term is divisible by 5. Let an be such a term.
+If v2 (an ) = 1, then d2= 2, d3 = 3. Since v5 (an ) ≥ 1, 5 is a divisor. d4 = min(6, 5) = 5. Then
+31
+an . v2 (an+1 ) = v2 (an ) − v2 (30) = 1 − 1 = 0. So an+1 is odd, which
+an+1 = an 12 + 13 + 15 = 30
+fails by Lemma 1. Therefore, for a sequence with a term divisible by 5 to be valid, every
+13
+an . This means
+term an must satisfy v2 (an ) ≥ 2. This implies d4 = 4 for all n, so an+1 = 12
+v2 (an+1 ) = v2 (an ) − 2 and v3 (an+1 ) = v3 (an ) − 1. This cannot continue indefinitely. The
+sequence must eventually produce a term am with v2 (am ) < 2 or v3 (am ) < 1. If v2 (am ) = 1,
+the next term is odd. If v2 (am ) = 0, the term is odd. If v3 (am ) = 0, the term is not divisible
+by 3. All these cases lead to failure.
+**Main Analysis** From the lemmas, any term an in a valid sequence must be of the
+form N = 2a 3b M , where a, b ≥ 1 and all prime factors of M are ≥ 7. We analyze the
+sequence based on the value of a = v2 (N ).
+**Case 1: v2 (N ) = 1** Let N = 21 3b M with b ≥ 1 and prime factors of M being at
+least 7. The smallest divisors of N are d1 = 1, d2 = 2, d3 = 3. The next smallest divisor is
+d4 = min(22 , 2 · 3, 32 , p), where p is the smallest prime factor of M . Since v2 (N
+ ) = 1, 4 is not
+a divisor. d4 = min(6, 9, p). As p ≥ 7, d4 = 6. Then f (N ) = N 21 + 13 + 61 = N (1) = N .
+Such numbers are fixed points. For a1 to be one of these values, we must check that d(a1 ) ≥ 4.
+d(a1 ) = d(21 3b M ) = 2(b+1)d(M ). Since b ≥ 1, b+1 ≥ 2. d(M ) ≥ 1. So d(a1 ) ≥ 2(2)(1) = 4.
+The condition is satisfied. Thus, any integer N = 21 3b M with b ≥ 1 and prime factors of M
+being at least 7 is a possible value for a1 .
+**Case 2: v2 (N ) ≥ 2** Let N = 2a 3b M with a ≥ 2, b ≥ 1 and prime factors of M
+being at least 7. The smallest divisors are d1 = 1, d2 = 2, d3 = 3, d4 = 4. Then f (N ) =
+N . Let a1 be such a number. The sequence starts with as+1 = 13
+a as
+N 21 + 13 + 14 = 13
+12
+12 s
+long as v2 (as ) ≥ 2. This recurrence implies v2 (as+1 ) = v2 (as ) − 2 and v3 (as+1 ) = v3 (as ) − 1.
+For the sequence to be infinite, it must transition to a fixed point, which requires an iterate
+ak to have v2 (ak ) = 1. Let v2 (a1 ) = a. The sequence of 2-adic valuations is a, a − 2, a − 4, . . . .
+For this sequence to attain the value 1, a must be odd. If a were even, it would eventually
+become 0, making the term odd and causing failure. So, a must be an odd integer, a ≥ 3.
+The transition to v2 = 1 occurs at step s0 = (a − 1)/2. The term is as0 +1 = a(a+1)/2 . as+1 =
+13 s
+a1 = 2a−2s 3b−s 13s M . For s = s0 = (a − 1)/2, we get v2 (as0 +1 ) = a − 2 a−1
+= 1. For this
+12
+2
+.
+term to be a fixed point, its 3-adic valuation must be at least 1. v3 (as0 +1 ) = b − s0 = b − a−1
+2
+a−1
+a−1
+a+1
+We need b − 2 ≥ 1 ⇐⇒ b ≥ 1 + 2 = 2 . This condition also ensures v3 (as ) ≥ 1 for all
+s ≤ s0 .
+Finally, we verify that all terms in such a sequence satisfy d(an ) ≥ 4. For s ∈ {0, 1, . . . , a−3
+},
+2
+a−3
+a−2s b−s
+s
+the term is as+1 = 2
+3 13 M . v2 (as+1 ) = a − 2s ≥ a − 2( 2 ) = 3. v3 (as+1 ) =
+a−3
+a+1
+b − s ≥ b − 2 ≥ 2 − a−3
+= 2. So d(as+1 ) = (v2 (as+1 ) + 1)(v3 (as+1 ) + 1)d(13s M ) ≥
+2
+(3 + 1)(2 + 1)(1) = 12 ≥ 4. The term a(a+1)/2 is the fixed point 21 · 3b−(a−1)/2 · 13(a−1)/2 M .
+v2 = 1, v3 = b − a−1
+≥ 1. d(a(a+1)/2 ) = (1 + 1)(b − a−1
++ 1)d(13(a−1)/2 M ) ≥ 2(1 + 1)(1) = 4.
+2
+2
+All terms satisfy the condition.
+**Conclusion** The possible values for a1 are integers N = 2a 3b M where a, b ≥ 1 and
+prime factors of M are ≥ 7, satisfying one of: 1. a = 1, b ≥ 1 (fixed points). 2. a is an odd
+
+22
+
+integer, a ≥ 3, and b ≥ a+1
+(converging to a fixed point).
+2
+
+5.5
+
+Problem 5
+
+P
+P
+Let Sn = ni=1 xi and Qn = ni=1 x2i . Alice plays on odd turns n, Bazza on even turns n.
+Alice’s move xn is valid if Sn−1 + xn ≤ λn. If Sn−1 > λn, she loses. Bazza’s move xn is valid
+Qn−1 > n, he loses.
+if Qn−1 + x2n ≤ n. If
+√
+2
+**Case 1: λ > 2 (Alice has a winning strategy)**
+Alice can devise a plan to win on a predetermined turn
+2m − 1. **Alice’s Plan:** 1.
+√
+m 2
+Alice chooses an integer m large enough such that λ > 2m−1 . Such an m exists because the
+√
+
+√
+
+m 2
+is strictly decreasing for m ≥ 1 and limm→∞ g(m) = 22 . 2. For her
+function g(m) = 2m−1
+turns 2k − 1 where k = 1, . . . , m − 1, Alice chooses x2k−1 = 0. 3. On turn 2m − 1, Alice will
+choose a value x2m−1 that makes Bazza’s next move impossible.
+**Analysis of Alice’s Plan:** Alice wins on turn 2m − 1 if she can choose x2m−1 ≥ 0
+such that her move is valid and Bazza’s next move √
+is not. This is possible if and only if
+the interval of winning moves for x2m−1 , which is ( 2m − Q2m−2 , λ(2m − 1) − S2m−2 ], is
+non-empty. This requires the condition:
+p
+S2m−2 + 2m − Q2m−2 < λ(2m − 1)
+
+Bazza’s goal is to prevent this. Given Alice’s plan (x2k−1 = 0 for k < m), Bazza
+Pm−1controls
+the valuesP
+yk = x2k for k = 1, . . . , m − 1. These choices determine S2m−2 = k=1 yk and
+2
+Q2m−2 = m−1
+k=1
+√ yk . Bazza’s best defense is to choose his moves to maximize the function
+F = S2m−2 + 2m − Q2m−2 .
+√
+**Lemma:** The maximum value of F that Bazza can achieve is m
+Pj 2. 2**Proof:**
+Let S = S2m−2 and Q = Q2m−2 .PBazza’s moves are constrained by
+i=1 yi ≤ 2j for
+m−1 2
+inequality,
+j = 1, . . . , m − 1. This implies Q = k=1 yk ≤ 2(m − 1). By the Cauchy-Schwarz
+p
+Pm−1 2
+Pm−1 2
+2
+S = ( k=1 yk ) ≤ (m − 1) k=1 yk = (m − 1)Q. Thus, S ≤ (m − 1)Q. So, F ≤
+p
+√
+(m − 1)Q + 2m − Q. Let this upper
+bound be h(Q). We maximize h(Q) for Q ∈
+√
+m−1
+1
+[0, 2(m − 1)]. The derivative h′ (Q) = 2√Q − 2√2m−Q
+is positive for Q < 2(m − 1). So h(Q)
+is strictly increasing on its
+1). The maximum
+value
+p is at Q = 2(m −√
+pdomain. The maximum
+√
+√
+of h(Q) is h(2(m − 1)) = (m − 1)2(m − 1) + 2m − 2(m − 1) = 2(m − 1) + 2 = m 2.
+This maximum is achieved when Q = 2(m − 1) and the Cauchy-Schwarz inequality is an
+2
+equality,
+√ which means all yk are equal. Let
+√ yk = c. Then Q = (m − 1)c = 2(m − 1) =⇒
+c = 2. The sequence of moves x2k = 2 for k = 1, . . . , m − 1 is valid for Bazza and it
+maximizes the defensive function F .
+**Alice’s Victory:** Alice’s strategy is guaranteed to work if her winning condition√
+holds
+even against Bazza’s √
+best defense. This requires max(F ) < λ(2m − 1), which is m 2 <
+m 2
+λ(2m − 1), or λ > 2m−1 . By her initial choice of m, this condition is met. We must also
+check that Alice’s moves x2k−1 = 0 for k < m √
+are valid. This requires S2k−2
+√ ≤ λ(2k − 1).
+Bazza’s best√defense maximizes
+S
+to
+(k
+−
+1)
+2.
+The
+condition
+is
+(k
+−
+1)
+2 ≤ λ(2k
+− 1),
+2k−2
+√
+√
+√
+(k−1) 2
+(k−1) 2
+2
+2
+or λ ≥ 2k−1 . Since λ > 2 and 2k−1 is an increasing function of k with limit 2 , this
+condition holds for all k. Thus, Alice has a winning strategy.
+23
+
+√
+
+**Case 2: λ < 22 (Bazza has a winning strategy)**
+p
+Bazza’s strategy is to always play x2k = 2k − Q2k−1 if possible. This sets Q2k = 2k.
+As shown
+in Case 1, Alice cannot √
+win against this strategy because her winning condition
+√
+m 2
+λ > 2m−1 can never be met if λ < 22 . We now show that Bazza will win.
+Alice loses on turn 2m − 1 if S2m−2 > λ(2m − 1). To survive, Alice must choose her
+moves to keep the sequence of sums S2k−2 as small as possible
+√ for as long as possible. With
+Bazza’sqstrategy, Alice’s choice of x2k−1 (provided x2k−1
+q ≤ 2) determines Bazza’s response
+
+2 − x22k−1 . The sum grows by Ck = x2k−1 + 2 − x22k−1 over turns 2k − 1 and 2k.
+P
+To minimize the sum√S2m−2 = m−1
+x2k−1 to minimize Ck . The
+k=1
+√Ck , Alice must choose each √
+2
+function √
+f (x) = x + 2 − x on [0, 2] has a minimum value of 2, achieved only at x = 0
+and x = 2. Any other choice would lead to a strictly larger sum S2m−2 for all m > k + 1,
+making survival strictly harder.
+Thus, an optimal survival strategy for Alice must consist
+√
+only of moves x2k−1 ∈ {0, 2}.
+Let’s compare these two choices at turn 2k − 1. Suppose Alice has survived so far, with
+sum S2k−2 . 1. If Alice chooses √
+x2k−1 = 0: This move is valid if√S2k−2 ≤ λ(2k − 1). The
+resulting√sum is S2k = S2k−2 + 2. 2. If Alice chooses x2k−1√= 2: This move is valid if
+S2k−2 + 2 ≤ λ(2k − 1). The resulting sum is S2k = S2k−2 + 2.
+Both choices lead to the same future sums S2j for j ≥ k, meaning the survival conditions
+for all subsequent turns are identical regardless of which of the two is chosen. However, the
+condition to be allowed to make
+the choice at turn 2k − 1 is strictly easier for x2k−1 = 0. A
+√
+strategy involving x2k−1 = 2 is only valid if the corresponding strategy with x2k−1 = 0 is
+also valid, but the converse is not true. Therefore, the strategy of always choosing x2k−1 = 0
+is Alice’s best hope for survival. If she cannot survive with this strategy, she cannot survive
+with any other.
+We now analyze this specific line of play: Alice
+always plays x2k−1 = 0, and Bazza
+√
+√
+(k−1) 2
+responds with x2k = 2. 1. Let h(k) = 2k−1 . Since h(k) is strictly increasing and
+x2k =
+
+√
+
+√
+
+approaches 22 , and λ < 22 , there exists a smallest integer m ≥ 2 such that λ < h(m). 2.
+√
+For any k < m, we have λ√≥ h(k). Alice’s move x2k−1 = 0 is valid, since S2k−2 = (k − 1) 2
+and the condition is (k−1) 2 ≤ λ(2k−1), which is equivalent to λ ≥ h(k). 3. On turn 2m−1,
+√
+2.
+Alice has played according to her optimal survival
+strategy.
+The
+sum
+is
+S
+=
+(m
+−
+1)
+2m−2
+√
+She must choose x2m−1 ≥
+0
+such
+that
+(m
+−
+1)
+2
++
+x
+≤
+λ(2m
+−
+1).
+4.
+By
+the
+choice
+2m−1
+√
+√
+(m−1) 2
+of m, we have λ < 2m−1 , which is λ(2m − 1) < (m − 1) 2. 5. The condition for Alice’s
+√
+√
+move becomes (m − 1) 2 + x2m−1 ≤ λ(2m − 1) < (m − 1) 2. This implies x2m−1 < 0, which
+is impossible. Alice√ cannot make a move, so Bazza wins.
+**Case 3: λ = 22 (Draw)**
+In this case, neither player has a winning strategy. A player has a winning strategy if
+they can force a win in a finite number of moves against any of the opponent’s strategies.
+**Alice does not have a winning strategy.** To prove this, we show that Bazza has a
+defensive strategy that p
+prevents Alice from ever winning. Let Bazza adopt the strategy of
+always choosing x2k = 2k − Q2k−1 (if possible). Alice wins if she can play x2m−1 on turn
+2m − 1 such that Q2m−1 > 2m. With Bazza’s strategy, Q2m−2 = 2(m − 1) (assuming Alice
+24
+
+has not won before). √Alice’s winning condition becomes 2(m − 1) + x22m−1 > 2m, which
+simplifies to x2m−1
+> 2. To play such a move, her budget
+must
+allow it: S2m−2 + x2m−1 ≤
+√
+√
+√
+2
+2
+λ(2m − 1) = 2 (2m − 1). This requires S2m−2 + 2 < 2 (2m − 1). Against Bazza’s
+q
+√
+Pm−1
+strategy, S2m−2 =
+(x
++
+2 − x22k−1 ). The minimum value of each term is 2,
+2k−1
+k=1
+√
+so the minimum possible √value of S2m−2 is (m − 1) 2. Thus, for √Alice to win, it must be
+√
+√
+√
+that (m − 1) 2 + 2 < 22 (2m − 1), which simplifies to m 2 < 22 (2m − 1) ⇐⇒ 2m <
+2m − 1 ⇐⇒ 0 < −1. This is impossible. So, Alice can never satisfy her winning condition
+against this strategy from Bazza. Therefore, Alice does not have a winning strategy.
+**Bazza does not have a winning strategy.** To prove this, we show that Alice has a
+defensive strategy that prevents Bazza from ever winning. Let Alice adopt the √strategy of
+always choosing x2k−1 = 0. Bazza wins if he can force S2m−2 > λ(2m − 1) = 22 (2m − 1)
+P
+for some m. With Alice’s strategy, S2m−2 = m−1
+k=1 x2k . Bazza’s moves x2k are constrained
+Pk
+2
+by Q2k = i=1 x2i ≤ 2k. To force a win, Bazza must maximize √
+S2m−2 . As shown in the
+lemma in Case
+√ 1, the maximum possible value for S2m−2 is (m − 1) 2, achieved when Bazza
+√
+plays x2k = 2 for all k < m. So, the largest sum Bazza can force is S2m−2
+= (m − 1) 2.
+√
+√
+Bazza wins if this sum exceeds Alice’s budget limit, i.e., if (m − 1) 2 > 22 (2m − 1). This
+simplifies to 2(m − 1) > 2m − 1 ⇐⇒ 2m − 2 > 2m − 1 ⇐⇒ −2 > −1. This is impossible.
+So, Bazza can never force Alice to lose. Therefore, Bazza does not have a winning strategy.
+Since neither player can force a win, neither has a winning strategy. The game can
+continue indefinitely,
+for example with Alice always playing x2k−1 = 0 and Bazza always
+√
+playing x2k = 2. This results in a draw.
+
+5.6
+
+Problem 6
+
+The model only reports the trivial upper bound 4048.
+
+6
+
+Outlook
+
+All results reported in this work are obtained by using Gemini 2.5 Pro only. We expect that
+using a diverse set of leading models (e.g, Grok 4, OpenAI-o series) would yield stronger
+mathematical capability.
+In our pipeline, we sample solutions and then try to individually improve each solution.
+It is expected that a multi-agent system (analogues to Grok 4 heavy) where the strengths of
+different solutions can be combined would lead to stronger mathematical capability.
+
+References
+[1] Advanced
+achieves
+
+version
+gold-medal
+
+of
+gemini
+standard
+at
+
+25
+
+with
+the
+
+deep
+think
+international
+
+officially
+mathemat-
+
+ical
+olympiad.
+https://deepmind.google/discover/blog/
+advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard[2] International mathematical olympiad. https://www.imo-official.org/. Accessed:
+2025-07-19.
+[3] Janice Ahn, Rishu Verma, Renze Lou, Di Liu, Rui Zhang, and Wenpeng Yin. Large
+language models for mathematical reasoning: Progresses and challenges. arXiv preprint
+arXiv:2402.00157, 2024.
+[4] Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz
+Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher
+Hesse, and John Schulman. Training verifiers to solve math word problems. arXiv
+preprint arXiv:2110.14168, 2021.
+[5] Dušan Djukić, Vladimir Janković, Ivan Matić, and Nikola Petrović. The IMO Compendium: A Collection of Problems Suggested for the International Mathematical
+Olympiads: 1959-2009 Second Edition. Springer Science & Business Media, 2011.
+[6] Jesse Dodge, Martine Sap, Ana Marasović, Roy Schwartz, Noah A Smith, and Yejin
+Choi. Documenting the extent of contamination in bigscience’s roots corpus. arXiv
+preprint arXiv:2110.07329, 2021.
+[7] G. Comanici et al. Gemini 2.5: Pushing the frontier with advanced reasoning, multimodality, long context, and next generation agentic capabilities. arXiv:2507.06261.
+[8] Chaoqun He, Renjie Luo, Yuli Zhou, Jiaxin Ge, Xiaolin Chen, Shuting Dai, Linwen
+Ye, Renrui Zhang, Qiao Yu, Rui Zhao, Jiaming Liu, Yizhe Zhang, Jiaqi Ma, Xiaojun
+Chang, Tong Xiao, and Jing Gao. Olympiadbench: A challenging benchmark for promoting agi with olympiad-level bilingual multimodal scientific problems. arXiv preprint
+arXiv:2402.14008, 2024.
+[9] Dan Hendrycks, Collin Burns, Saurabh Kadavath, Akul Arora, Steven Basart, Eric
+Tang, Dawn Song, and Jacob Steinhardt. Measuring mathematical problem solving
+with the math dataset. arXiv preprint arXiv:2103.03874, 2021.
+[10] Jiawei Li, Zhonghao Li, Xinyi Wang, Zhiqiang Yuan, Hongwei Liu, Pengfei Liu, and
+Xiangyu Zhang. Advocate for complete benchmarks for formal reasoning with large
+language models. arXiv preprint arXiv:2507.04719, 2025.
+[11] Haoran Liao, Qinyi Du, Shaohua Hu, Hao He, Yanyan Xu, Jidong Tian, and Yaohui Jin.
+Modeling complex mathematical reasoning via large language model based mathagent.
+arXiv preprint arXiv:2311.13316, 2023.
+[12] Arvin Mahdavi et al. Brains vs. bytes: Evaluating llm proficiency in olympiad mathematics, 2025.
+26
+
+[13] MathArena. Not even bronze: Evaluating llms on 2025 international math olympiad.
+https://matharena.ai/blog/imo-2025-results/, 2025. Accessed: July 20, 2025.
+[14] Alexey Petrov et al. Proof or bluff? evaluating llms on 2025 usa math olympiad, 2025.
+[15] Jiayi Sheng, Luna Lyu, Jikai Jin, Tony Xia, Alex Gu, James Zou, and Pan Lu. Solving
+inequality proofs with large language models. arXiv preprint arXiv:2506.07927, 2025.
+[16] Trieu H Trinh, Yuhuai Wu, Quoc V Le, He He, and Thang Luong. Solving olympiad
+geometry without human demonstrations. Nature, 625(7995):476–482, 2024.
+[17] Kun Wang, Kejin Yang, Wenjun Liu, Jiannong Cao, and Ruiping Wang. A benchmark
+for evaluating advanced mathematical reasoning in ai. arXiv preprint arXiv:2411.04872,
+2024.
+[18] Peng-Yuan Wang et al. A survey on large language models for mathematical reasoning.
+arXiv preprint arXiv:2506.08446, 2025.
+[19] Alexander Wei, Sheryl Hsu, and Noam Brown.
+Openai’s gold medal performance on the international math olympiad. https://x.com/alexwei_/status/
+1946477742855532918, 2025. Accessed: July 20, 2025.
+[20] Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Ed Chi, Quoc Le, and
+Denny Zhou. Chain-of-thought prompting elicits reasoning in large language models.
+Advances in Neural Information Processing Systems, 35:24824–24837, 2022.
+[21] Wenxuan Zhou et al. Don’t make your llm a parroting parrot: A survey and analysis
+of data contamination in llm evaluation, 2024.
+
+27
+
+

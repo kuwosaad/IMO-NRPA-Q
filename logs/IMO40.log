@@ -1,0 +1,348 @@
+[2025-08-30 03:24:17] [MAIN] Logging to file: /Users/mohammadsaad/Desktop/IMO Framework CEO Genius /logs/IMO40.log
+[2025-08-30 03:24:17] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 0 of 10 ...
+[2025-08-30 03:24:17] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:17] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:17] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1058b..., arg4=<__main__.TelemetrySystem object at 0x1058d9910>)
+[2025-08-30 03:24:17] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:17] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:17] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:17] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:17] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:17] [NRPA] Invalid/empty strategist response, re-asking (attempt 1/5)
+[2025-08-30 03:24:19] [ERROR] Exception in enumerate_initial_strategies (attempt 2): No module named 'prompts'
+[2025-08-30 03:24:19] [NRPA] Invalid/empty strategist response, re-asking (attempt 2/5)
+[2025-08-30 03:24:21] [ERROR] Exception in enumerate_initial_strategies (attempt 3): No module named 'prompts'
+[2025-08-30 03:24:21] [NRPA] Invalid/empty strategist response, re-asking (attempt 3/5)
+[2025-08-30 03:24:23] [ERROR] Exception in enumerate_initial_strategies (attempt 4): No module named 'prompts'
+[2025-08-30 03:24:23] [NRPA] Invalid/empty strategist response, re-asking (attempt 4/5)
+[2025-08-30 03:24:25] [ERROR] Exception in enumerate_initial_strategies (attempt 5): No module named 'prompts'
+[2025-08-30 03:24:25] [NRPA] All re-asking attempts failed, using default strategies
+[2025-08-30 03:24:25] [NRPA] No valid strategies parsed, using default strategies:
+[2025-08-30 03:24:25]  - Direct Approach: Solve the problem directly using standard techniques and known theorems
+[2025-08-30 03:24:25]  - Case Analysis: Break the problem into manageable cases based on key parameters
+[2025-08-30 03:24:25]  - Proof by Contradiction: Assume the opposite of what we want to prove and derive a contradiction
+[2025-08-30 03:24:25]  - Constructive Proof: Build explicit examples or constructions to demonstrate the solution exists
+[2025-08-30 03:24:25]  - Induction: Use mathematical induction if the problem involves natural numbers or recursive structures
+[2025-08-30 03:24:25] [TRACE] EXIT enumerate_initial_strategies -> ['Direct Approach: Solve the problem directly using standard techniques and known theorems', 'Case Analysis: Break the problem into manageable cases based on key parameters', 'Proof by Contradictio... (8.02ms)
+[2025-08-30 03:24:25] [NRPA] Starting search: L=2, N=60, Alpha=1.0, MaxDepth=4, Temp=1.0
+[2025-08-30 03:24:25] [TRACE] ENTER rollout(arg0=<code.nrpa.PolicyManager object at 0x105c36300>, arg1=['Direct Approach: Solve the problem directly u..., arg2=<function NRPAStrategySelector.select_strategy...., arg3=<function NRPAStrategySe...)
+[2025-08-30 03:24:25] [NRPA] Generating refinements for prefix: Constructive Proof: Build explicit examples or constructions to demonstrate the solution exists
+[2025-08-30 03:24:25] [ERROR] Exception in generate_refinements: No module named 'prompts'
+[2025-08-30 03:24:25] [NRPA] Using default refinement due to error: ['Refinement of: Constructive Proof: Build explicit examples or constructions to demonstrate the solution exists']
+[2025-08-30 03:24:25] [TRACE] ERROR rollout -> AttributeError: 'ExplorationMetaLearner' object has no attribute 'ExplorationState' (0.00ms)
+[2025-08-30 03:24:25] [TRACE] ERROR init_explorations -> AttributeError: 'ExplorationMetaLearner' object has no attribute 'ExplorationState' (8.02ms)
+[2025-08-30 03:24:25] [MAIN] >>>>>>> Error in run 0: 'ExplorationMetaLearner' object has no attribute 'ExplorationState'
+[2025-08-30 03:24:25] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 1 of 10 ...
+[2025-08-30 03:24:25] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:25] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:25] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1033f..., arg4=<__main__.TelemetrySystem object at 0x1058d9910>)
+[2025-08-30 03:24:25] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:25] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:25] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:25] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:25] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:25] [NRPA] Invalid/empty strategist response, re-asking (attempt 1/5)
+[2025-08-30 03:24:27] [ERROR] Exception in enumerate_initial_strategies (attempt 2): No module named 'prompts'
+[2025-08-30 03:24:27] [NRPA] Invalid/empty strategist response, re-asking (attempt 2/5)
+[2025-08-30 03:24:29] [ERROR] Exception in enumerate_initial_strategies (attempt 3): No module named 'prompts'
+[2025-08-30 03:24:29] [NRPA] Invalid/empty strategist response, re-asking (attempt 3/5)
+[2025-08-30 03:24:31] [ERROR] Exception in enumerate_initial_strategies (attempt 4): No module named 'prompts'
+[2025-08-30 03:24:31] [NRPA] Invalid/empty strategist response, re-asking (attempt 4/5)
+[2025-08-30 03:24:33] [ERROR] Exception in enumerate_initial_strategies (attempt 5): No module named 'prompts'
+[2025-08-30 03:24:33] [NRPA] All re-asking attempts failed, using default strategies
+[2025-08-30 03:24:33] [NRPA] No valid strategies parsed, using default strategies:
+[2025-08-30 03:24:33]  - Direct Approach: Solve the problem directly using standard techniques and known theorems
+[2025-08-30 03:24:33]  - Case Analysis: Break the problem into manageable cases based on key parameters
+[2025-08-30 03:24:33]  - Proof by Contradiction: Assume the opposite of what we want to prove and derive a contradiction
+[2025-08-30 03:24:33]  - Constructive Proof: Build explicit examples or constructions to demonstrate the solution exists
+[2025-08-30 03:24:33]  - Induction: Use mathematical induction if the problem involves natural numbers or recursive structures
+[2025-08-30 03:24:33] [TRACE] EXIT enumerate_initial_strategies -> ['Direct Approach: Solve the problem directly using standard techniques and known theorems', 'Case Analysis: Break the problem into manageable cases based on key parameters', 'Proof by Contradictio... (8.03ms)
+[2025-08-30 03:24:33] [NRPA] Starting search: L=2, N=60, Alpha=1.0, MaxDepth=4, Temp=1.0
+[2025-08-30 03:24:33] [TRACE] ENTER rollout(arg0=<code.nrpa.PolicyManager object at 0x105c35130>, arg1=['Direct Approach: Solve the problem directly u..., arg2=<function NRPAStrategySelector.select_strategy...., arg3=<function NRPAStrategySe...)
+[2025-08-30 03:24:33] [NRPA] Generating refinements for prefix: Direct Approach: Solve the problem directly using standard techniques and known theorems
+[2025-08-30 03:24:33] [ERROR] Exception in generate_refinements: No module named 'prompts'
+[2025-08-30 03:24:33] [NRPA] Using default refinement due to error: ['Refinement of: Direct Approach: Solve the problem directly using standard techniques and known theorems']
+[2025-08-30 03:24:33] [TRACE] ERROR rollout -> AttributeError: 'ExplorationMetaLearner' object has no attribute 'ExplorationState' (0.00ms)
+[2025-08-30 03:24:33] [TRACE] ERROR init_explorations -> AttributeError: 'ExplorationMetaLearner' object has no attribute 'ExplorationState' (8.03ms)
+[2025-08-30 03:24:33] [MAIN] >>>>>>> Error in run 1: 'ExplorationMetaLearner' object has no attribute 'ExplorationState'
+[2025-08-30 03:24:33] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 2 of 10 ...
+[2025-08-30 03:24:33] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:33] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:33] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1058d..., arg4=<__main__.TelemetrySystem object at 0x1033f39b0>)
+[2025-08-30 03:24:33] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:33] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:33] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:33] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:33] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:33] [NRPA] Invalid/empty strategist response, re-asking (attempt 1/5)
+[2025-08-30 03:24:35] [ERROR] Exception in enumerate_initial_strategies (attempt 2): No module named 'prompts'
+[2025-08-30 03:24:35] [NRPA] Invalid/empty strategist response, re-asking (attempt 2/5)
+[2025-08-30 03:24:37] [ERROR] Exception in enumerate_initial_strategies (attempt 3): No module named 'prompts'
+[2025-08-30 03:24:37] [NRPA] Invalid/empty strategist response, re-asking (attempt 3/5)
+[2025-08-30 03:24:39] [ERROR] Exception in enumerate_initial_strategies (attempt 4): No module named 'prompts'
+[2025-08-30 03:24:39] [NRPA] Invalid/empty strategist response, re-asking (attempt 4/5)
+[2025-08-30 03:24:41] [ERROR] Exception in enumerate_initial_strategies (attempt 5): No module named 'prompts'
+[2025-08-30 03:24:41] [NRPA] All re-asking attempts failed, using default strategies
+[2025-08-30 03:24:41] [NRPA] No valid strategies parsed, using default strategies:
+[2025-08-30 03:24:41]  - Direct Approach: Solve the problem directly using standard techniques and known theorems
+[2025-08-30 03:24:41]  - Case Analysis: Break the problem into manageable cases based on key parameters
+[2025-08-30 03:24:41]  - Proof by Contradiction: Assume the opposite of what we want to prove and derive a contradiction
+[2025-08-30 03:24:41]  - Constructive Proof: Build explicit examples or constructions to demonstrate the solution exists
+[2025-08-30 03:24:41]  - Induction: Use mathematical induction if the problem involves natural numbers or recursive structures
+[2025-08-30 03:24:41] [TRACE] EXIT enumerate_initial_strategies -> ['Direct Approach: Solve the problem directly using standard techniques and known theorems', 'Case Analysis: Break the problem into manageable cases based on key parameters', 'Proof by Contradictio... (8.01ms)
+[2025-08-30 03:24:41] [NRPA] Starting search: L=2, N=60, Alpha=1.0, MaxDepth=4, Temp=1.0
+[2025-08-30 03:24:41] [TRACE] ENTER rollout(arg0=<code.nrpa.PolicyManager object at 0x105c34fb0>, arg1=['Direct Approach: Solve the problem directly u..., arg2=<function NRPAStrategySelector.select_strategy...., arg3=<function NRPAStrategySe...)
+[2025-08-30 03:24:41] [NRPA] Generating refinements for prefix: Induction: Use mathematical induction if the problem involves natural numbers or recursive structures
+[2025-08-30 03:24:41] [ERROR] Exception in generate_refinements: No module named 'prompts'
+[2025-08-30 03:24:41] [NRPA] Using default refinement due to error: ['Refinement of: Induction: Use mathematical induction if the problem involves natural numbers or recursive structures']
+[2025-08-30 03:24:41] [TRACE] ERROR rollout -> AttributeError: 'ExplorationMetaLearner' object has no attribute 'ExplorationState' (0.00ms)
+[2025-08-30 03:24:41] [TRACE] ERROR init_explorations -> AttributeError: 'ExplorationMetaLearner' object has no attribute 'ExplorationState' (8.02ms)
+[2025-08-30 03:24:41] [MAIN] >>>>>>> Error in run 2: 'ExplorationMetaLearner' object has no attribute 'ExplorationState'
+[2025-08-30 03:24:41] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 3 of 10 ...
+[2025-08-30 03:24:41] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:41] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:41] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1033f..., arg4=<__main__.TelemetrySystem object at 0x1058d9910>)
+[2025-08-30 03:24:41] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:41] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:41] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:41] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:41] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:41] [NRPA] Invalid/empty strategist response, re-asking (attempt 1/5)
+[2025-08-30 03:24:43] [ERROR] Exception in enumerate_initial_strategies (attempt 2): No module named 'prompts'
+[2025-08-30 03:24:43] [NRPA] Invalid/empty strategist response, re-asking (attempt 2/5)
+[2025-08-30 03:24:45] [ERROR] Exception in enumerate_initial_strategies (attempt 3): No module named 'prompts'
+[2025-08-30 03:24:45] [TRACE] ERROR enumerate_initial_strategies -> BrokenPipeError: [Errno 32] Broken pipe (4.01ms)
+[2025-08-30 03:24:45] [TRACE] ERROR init_explorations -> BrokenPipeError: [Errno 32] Broken pipe (4.01ms)
+[2025-08-30 03:24:45] [MAIN] >>>>>>> Error in run 3: [Errno 32] Broken pipe
+[2025-08-30 03:24:45] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 4 of 10 ...
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1058d..., arg4=<__main__.TelemetrySystem object at 0x1033f39b0>)
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:45] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:45] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:45] [TRACE] ERROR enumerate_initial_strategies -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ERROR init_explorations -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [MAIN] >>>>>>> Error in run 4: [Errno 32] Broken pipe
+[2025-08-30 03:24:45] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 5 of 10 ...
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1033f..., arg4=<__main__.TelemetrySystem object at 0x1058d9910>)
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:45] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:45] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:45] [TRACE] ERROR enumerate_initial_strategies -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ERROR init_explorations -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [MAIN] >>>>>>> Error in run 5: [Errno 32] Broken pipe
+[2025-08-30 03:24:45] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 6 of 10 ...
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1058d..., arg4=<__main__.TelemetrySystem object at 0x1033f39b0>)
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:45] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:45] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:45] [TRACE] ERROR enumerate_initial_strategies -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ERROR init_explorations -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [MAIN] >>>>>>> Error in run 6: [Errno 32] Broken pipe
+[2025-08-30 03:24:45] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 7 of 10 ...
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1036c..., arg4=<__main__.TelemetrySystem object at 0x1033f39b0>)
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:45] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:45] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:45] [TRACE] ERROR enumerate_initial_strategies -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ERROR init_explorations -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [MAIN] >>>>>>> Error in run 7: [Errno 32] Broken pipe
+[2025-08-30 03:24:45] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 8 of 10 ...
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1033f..., arg4=<__main__.TelemetrySystem object at 0x1036c2f30>)
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:45] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:45] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:45] [TRACE] ERROR enumerate_initial_strategies -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ERROR init_explorations -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [MAIN] >>>>>>> Error in run 8: [Errno 32] Broken pipe
+[2025-08-30 03:24:45] 
+
+[MAIN] >>>>>>>>>>>>>>>>>>>>>>>>>> Run 9 of 10 ...
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ENTER init_explorations(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=True, arg2=[], arg3=<__main__.BacktrackingManager object at 0x1036c..., arg4=<__main__.TelemetrySystem object at 0x1033f39b0>)
+[2025-08-30 03:24:45] [TRACE] ENTER initialize_scratchpad(arg0=*** Problem Statement ***
+
+A line in the plane ...)
+[2025-08-30 03:24:45] [TRACE] EXIT initialize_scratchpad -> --- WORKING THEORY SCRATCHPAD ---
+**Problem Statement:** *** Problem Statement ***
+
+A line in the plane is called *sunny* if it is not parallel to any of the $x$-axis, the $y$-axis, and the line $x... (0.00ms)
+[2025-08-30 03:24:45] [NRPA] Starting Strategist with NRPA Strategy Search...
+[2025-08-30 03:24:45] [TRACE] ENTER enumerate_initial_strategies(arg0=*** Problem Statement ***
+
+A line in the plane ..., arg1=[])
+[2025-08-30 03:24:45] [ERROR] Exception in enumerate_initial_strategies (attempt 1): No module named 'prompts'
+[2025-08-30 03:24:45] [TRACE] ERROR enumerate_initial_strategies -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [TRACE] ERROR init_explorations -> BrokenPipeError: [Errno 32] Broken pipe (0.00ms)
+[2025-08-30 03:24:45] [MAIN] >>>>>>> Error in run 9: [Errno 32] Broken pipe

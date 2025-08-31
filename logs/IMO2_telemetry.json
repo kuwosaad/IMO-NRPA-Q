@@ -1,0 +1,35 @@
+{
+  "start_time": "2025-08-12T09:45:52.754250",
+  "end_time": "2025-08-12T12:30:40.401466",
+  "total_api_calls": 9,
+  "api_call_durations": [
+    1086.4997808933258,
+    958.8633489608765,
+    158.01686811447144,
+    1136.6225609779358,
+    1102.2654600143433,
+    985.175635099411,
+    966.7899889945984,
+    966.3078520298004,
+    965.0700199604034
+  ],
+  "agent_iterations": 0,
+  "verification_passes": 0,
+  "verification_failures": 1,
+  "strategy_changes": 0,
+  "solution_found": false,
+  "total_duration_seconds": 9887.647216,
+  "average_api_call_duration": 925.0679461161295,
+  "events": [
+    {
+      "type": "SESSION_START",
+      "description": "Telemetry session started",
+      "timestamp": "2025-08-12T09:45:52.754253"
+    },
+    {
+      "type": "SESSION_END",
+      "description": "Telemetry session ended",
+      "timestamp": "2025-08-12T12:30:40.401485"
+    }
+  ]
+}
